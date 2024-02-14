@@ -147,7 +147,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI Black" size="24" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Mange Customer"/>
+        <Property name="text" type="java.lang.String" value="Manage Customer"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblCustId">
@@ -159,6 +159,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCustId">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCustIdActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblFirstName">
       <Properties>

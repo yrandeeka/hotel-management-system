@@ -4,16 +4,23 @@
  */
 package edu.hotel.layered.view;
 
+import edu.hotel.layered.controller.CustomerController;
+import edu.hotel.layered.dto.CustomerDto;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Yasas Randeeka
  */
 public class CustomerView extends javax.swing.JFrame {
+    private CustomerController customerController;
 
     /**
      * Creates new form CustomerView
      */
     public CustomerView() {
+        this.customerController=new CustomerController();
         initComponents();
     }
 
@@ -63,10 +70,16 @@ public class CustomerView extends javax.swing.JFrame {
         });
 
         lblMangeCustomer.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
-        lblMangeCustomer.setText("Mange Customer");
+        lblMangeCustomer.setText("Manage Customer");
 
         lblCustId.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblCustId.setText("Customer ID");
+
+        txtCustId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCustIdActionPerformed(evt);
+            }
+        });
 
         lblFirstName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblFirstName.setText("First Name");
@@ -192,11 +205,16 @@ public class CustomerView extends javax.swing.JFrame {
 
     private void btnCustomerAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerAddActionPerformed
         // TODO add your handling code here:
+        saveCustomer();
     }//GEN-LAST:event_btnCustomerAddActionPerformed
 
     private void btnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToHomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnToHomeActionPerformed
+
+    private void txtCustIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCustIdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -252,4 +270,15 @@ public class CustomerView extends javax.swing.JFrame {
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtLastName;
     // End of variables declaration//GEN-END:variables
+
+    private void saveCustomer() {
+        CustomerDto customerDto=new CustomerDto(Integer.parseInt(txtCustId.getText()),txtFirstName.getText(),
+                txtLastName.getText(),Integer.parseInt(txtContactNo.getText()),
+                txtAddress.getText(),txtEmail.getText());
+        try {
+            String result=customerController.saveCustomer(customerDto);
+        } catch (Exception ex){
+            Logger.getLogger(CustomerView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
