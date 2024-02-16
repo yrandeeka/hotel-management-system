@@ -6,6 +6,7 @@ package edu.hotel.layered.controller;
 
 import edu.hotel.layered.dto.CustomerDto;
 import edu.hotel.layered.service.custom.impl.CustomerService;
+import java.util.List;
 
 /**
  *
@@ -17,5 +18,13 @@ public class CustomerController {
     public String saveCustomer(CustomerDto dto){
         
         return customerService.saveCustomer(dto);
+    }
+
+    public List<CustomerDto> getAllCustomer() {
+        return customerService.getAllCustomer();
+    }
+
+    public CustomerDto getCustomer(int id) {
+        return customerService.getCustomer(id);
     }
 }
