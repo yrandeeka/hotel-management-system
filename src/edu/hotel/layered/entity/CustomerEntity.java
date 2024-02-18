@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ import lombok.ToString;
  * @author Yasas Randeeka
  */
 @Entity
-@Table(name = "customer")
+@Table(name = "customer",uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

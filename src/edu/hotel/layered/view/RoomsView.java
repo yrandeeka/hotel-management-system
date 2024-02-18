@@ -4,17 +4,27 @@
  */
 package edu.hotel.layered.view;
 
+import edu.hotel.layered.controller.RoomCategoryController;
+import edu.hotel.layered.controller.RoomController;
+import edu.hotel.layered.dto.RoomCategoryDto;
+import edu.hotel.layered.entity.RoomCategoryEntity;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Yasas Randeeka
  */
 public class RoomsView extends javax.swing.JFrame {
-
+    RoomController roomController;
+    List<String> roomCategories=new ArrayList<>();
     /**
      * Creates new form ManageRooms
      */
     public RoomsView() {
+        this.roomController=new RoomController();
         initComponents();
+        loadRoomCategories();
     }
 
     /**
@@ -26,25 +36,36 @@ public class RoomsView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         lblManageRooms = new javax.swing.JLabel();
         lblRoomId = new javax.swing.JLabel();
         txtRoomId = new javax.swing.JTextField();
         lblOccupancy = new javax.swing.JLabel();
-        cmbobxOccupancy = new javax.swing.JComboBox<>();
-        lblBedSize = new javax.swing.JLabel();
-        cmbobxBedsize = new javax.swing.JComboBox<>();
+        cmbobxCategory = new javax.swing.JComboBox<>();
         btnAddRoom = new javax.swing.JButton();
         btnSearchRoom = new javax.swing.JButton();
         btnUpdateRoom = new javax.swing.JButton();
         lblAvailable = new javax.swing.JLabel();
         cmbobxAvailable = new javax.swing.JComboBox<>();
-        lblPrice = new javax.swing.JLabel();
-        txtPrice = new javax.swing.JTextField();
         btnToHome = new javax.swing.JButton();
-        lblCategory = new javax.swing.JLabel();
-        txtCategoryId = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblManageRooms.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
         lblManageRooms.setText("Mange Rooms");
@@ -53,16 +74,15 @@ public class RoomsView extends javax.swing.JFrame {
         lblRoomId.setText("Room ID");
 
         lblOccupancy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblOccupancy.setText("Occupancy");
+        lblOccupancy.setText("Category");
 
-        cmbobxOccupancy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cmbobxOccupancy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Single", "Double\t", "Triple", "Quad" }));
-
-        lblBedSize.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblBedSize.setText("Bed Size");
-
-        cmbobxBedsize.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cmbobxBedsize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Queen", "King", "Twin", "Hollywood Twin", "Double double", "Studio" }));
+        cmbobxCategory.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cmbobxCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", " " }));
+        cmbobxCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbobxCategoryActionPerformed(evt);
+            }
+        });
 
         btnAddRoom.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnAddRoom.setText("Add");
@@ -94,9 +114,6 @@ public class RoomsView extends javax.swing.JFrame {
         cmbobxAvailable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cmbobxAvailable.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Yes", "No", "N/A" }));
 
-        lblPrice.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblPrice.setText("Price");
-
         btnToHome.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnToHome.setText("Home");
         btnToHome.addActionListener(new java.awt.event.ActionListener() {
@@ -105,50 +122,50 @@ public class RoomsView extends javax.swing.JFrame {
             }
         });
 
-        lblCategory.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblCategory.setText("Category ID");
-
-        txtCategoryId.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(263, 263, 263)
-                .addComponent(lblManageRooms)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 246, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(263, 263, 263)
+                        .addComponent(lblManageRooms))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOccupancy, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAddRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbobxAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSearchRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addComponent(btnUpdateRoom))
+                            .addComponent(cmbobxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnToHome)
                 .addGap(39, 39, 39))
             .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblOccupancy, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblBedSize, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(cmbobxBedsize, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                                .addComponent(cmbobxOccupancy, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnUpdateRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAddRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSearchRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCategoryId, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                            .addComponent(cmbobxAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPrice))))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -158,37 +175,26 @@ public class RoomsView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblManageRooms)
                     .addComponent(btnToHome))
-                .addGap(21, 21, 21)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRoomId)
-                    .addComponent(txtRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddRoom))
-                .addGap(19, 19, 19)
+                    .addComponent(txtRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSearchRoom)
-                    .addComponent(cmbobxOccupancy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbobxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblOccupancy))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblBedSize)
-                    .addComponent(cmbobxBedsize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUpdateRoom))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAvailable)
                     .addComponent(cmbobxAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(lblCategory))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCategoryId, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPrice)
-                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(190, Short.MAX_VALUE))
+                    .addComponent(btnAddRoom)
+                    .addComponent(btnSearchRoom)
+                    .addComponent(btnUpdateRoom))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -208,7 +214,14 @@ public class RoomsView extends javax.swing.JFrame {
 
     private void btnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToHomeActionPerformed
         // TODO add your handling code here:
+        new HomeView().close(this);
+        new HomeView().setVisible(true);
     }//GEN-LAST:event_btnToHomeActionPerformed
+
+    private void cmbobxCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbobxCategoryActionPerformed
+        // TODO add your handling code here:
+        //loadRoomCategories();
+    }//GEN-LAST:event_cmbobxCategoryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,17 +267,25 @@ public class RoomsView extends javax.swing.JFrame {
     private javax.swing.JButton btnToHome;
     private javax.swing.JButton btnUpdateRoom;
     private javax.swing.JComboBox<String> cmbobxAvailable;
-    private javax.swing.JComboBox<String> cmbobxBedsize;
-    private javax.swing.JComboBox<String> cmbobxOccupancy;
+    private javax.swing.JComboBox<String> cmbobxCategory;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblAvailable;
-    private javax.swing.JLabel lblBedSize;
-    private javax.swing.JLabel lblCategory;
     private javax.swing.JLabel lblManageRooms;
     private javax.swing.JLabel lblOccupancy;
-    private javax.swing.JLabel lblPrice;
     private javax.swing.JLabel lblRoomId;
-    private javax.swing.JTextField txtCategoryId;
-    private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtRoomId;
     // End of variables declaration//GEN-END:variables
+
+    private void loadRoomCategories() {
+        List<RoomCategoryDto> categories=roomController.getAllRoomCategories();
+        
+        for(int i=0;i<categories.size();i++) {
+           System.out.println(categories.get(i).getOccupancy()+","+categories.get(i).getBedSize());
+           roomCategories.add(categories.get(i).getOccupancy()+","+categories.get(i).getBedSize());
+        }
+        cmbobxCategory.setSelectedItem(roomCategories);
+    }
 }

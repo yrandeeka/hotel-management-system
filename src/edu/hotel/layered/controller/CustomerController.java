@@ -27,4 +27,13 @@ public class CustomerController {
     public CustomerDto getCustomer(int id) {
         return customerService.getCustomer(id);
     }
+
+    public String updateCustomer(CustomerDto custDto) {
+        System.out.println("COntroller");
+        return customerService.updateCustomer(custDto);
+    }
+
+    public String deleteCustomer(int id) {
+        return customerService.deleteCustomer(id);
+    }
 }

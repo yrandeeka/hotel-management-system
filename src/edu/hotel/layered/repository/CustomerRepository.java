@@ -8,7 +8,6 @@ import edu.hotel.layered.dto.CustomerDto;
 import edu.hotel.layered.entity.CustomerEntity;
 import java.util.List;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 /**
@@ -31,15 +30,9 @@ public class CustomerRepository {
     }
     
     public int save(CustomerDto dto,Session session){
-        System.out.println("firstName"+dto.getFirstName());
-        System.out.println("lastName"+dto.getLastName());
-        System.out.println("contactNo"+dto.getContactNo());
-        System.out.println("address"+dto.getAddress());
-        System.out.println("email"+dto.getEmail());
-
-        String hql = "insert into customer(address,contact_no,email,first_name,last_name)"
+        String sql = "insert into customer(address,contact_no,email,first_name,last_name)"
                 + " VALUES(:address, :contactNo, :email, :firstName, :lastName)";
-        Query query=session.createSQLQuery(hql);
+        Query query=session.createSQLQuery(sql);
         query.setParameter("address", dto.getAddress());
         query.setParameter("contactNo", dto.getContactNo());
         query.setParameter("email", dto.getEmail());
@@ -47,9 +40,31 @@ public class CustomerRepository {
         query.setParameter("lastName", dto.getLastName());
         
         int rowCount=query.executeUpdate();
-        System.out.println("rowCount"+rowCount);
 
         return rowCount;
+    }
+
+    public int update(CustomerDto dto, Session session) {
+        String sql="UPDATE customer SET first_name=:firstName,last_name=:lastName,"
+                + "contact_no=:contactNo,address=:address,email=:email WHERE id=:custId";
+        Query query=session.createSQLQuery(sql);
+        query.setParameter("custId", dto.getCustomerId());
+        query.setParameter("address", dto.getAddress());
+        query.setParameter("contactNo", dto.getContactNo());
+        query.setParameter("email", dto.getEmail());
+        query.setParameter("firstName", dto.getFirstName());
+        query.setParameter("lastName", dto.getLastName());
+        
+        int rowCount=query.executeUpdate();
+        return rowCount;
+    }
+
+    public int delete(Session session,int id) {
+        String sql="DELETE FROM customer WHERE id=:customerId";
+        Query query=session.createSQLQuery(sql);
+        query.setParameter("customerId", id);
+        
+        return query.executeUpdate(); 
     }
     
     

@@ -23,17 +23,20 @@ public class CustomerService {
     public String saveCustomer(CustomerDto dto){
         Session session = SessionFactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
+        try {
+            int result=customerRepository.save(dto,session);
         
-        int result=customerRepository.save(dto,session);
-        
-        if(result==1){
-            transaction.commit();
-            return "Succeed";
-        }else{
-            transaction.rollback();
-            return "failed";
-        }
-        
+            if(result==1){
+                transaction.commit();
+                return "Succeed";
+            }else{
+                transaction.rollback();
+                return "failed";
+            }
+        } catch (Exception e) {
+             transaction.rollback();
+             return "Error-Save customer";
+        }  
     }   
 
     public List<CustomerDto> getAllCustomer() {
@@ -73,5 +76,44 @@ public class CustomerService {
         cusDto.setEmail(custEntity.getEmail());
         
         return cusDto;
+    }
+
+    public String updateCustomer(CustomerDto dto) {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            int count=customerRepository.update(dto,session);
+            if(count==1){
+                transaction.commit();
+                return "succeed";
+            }
+            else{
+                transaction.rollback();
+                return "failed";
+            }
+        } catch (Exception e) {
+            transaction.rollback();
+            return "Error-Update Customer";
+        }
+    }
+
+    public String deleteCustomer(int id) {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        
+        try {
+            int count=customerRepository.delete(session,id);
+            if(count==1){
+                transaction.commit();
+                return "succeed";
+            }
+            else{
+                transaction.rollback();
+                return "failed";
+            }
+        } catch (Exception e) {
+            transaction.rollback();
+            return "Error-Delete Customer";
+        }
     }
 }

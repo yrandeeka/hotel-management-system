@@ -6,6 +6,8 @@ package edu.hotel.layered.view;
 
 import edu.hotel.layered.controller.CustomerController;
 import edu.hotel.layered.dto.CustomerDto;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +39,7 @@ public class CustomerView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCustomer = new javax.swing.JPanel();
         btnCustSearch = new javax.swing.JButton();
         btnCustUpdate = new javax.swing.JButton();
         lblMangeCustomer = new javax.swing.JLabel();
@@ -59,7 +62,7 @@ public class CustomerView extends javax.swing.JFrame {
         btnCustDelete = new javax.swing.JButton();
         btnCusClear = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnCustSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnCustSearch.setText("Search");
@@ -131,6 +134,11 @@ public class CustomerView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCustomerMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblCustomer);
 
         btnCustDelete.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -149,97 +157,118 @@ public class CustomerView extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jCustomerLayout = new javax.swing.GroupLayout(jCustomer);
+        jCustomer.setLayout(jCustomerLayout);
+        jCustomerLayout.setHorizontalGroup(
+            jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jCustomerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addGap(15, 15, 15))
+            .addGroup(jCustomerLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jCustomerLayout.createSequentialGroup()
+                        .addComponent(btnCustomerAdd)
+                        .addGap(40, 40, 40)
+                        .addComponent(btnCustSearch)
+                        .addGap(45, 45, 45)
+                        .addComponent(btnCustUpdate)
+                        .addGap(40, 40, 40)
+                        .addComponent(btnCustDelete)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnCusClear))
+                    .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(323, Short.MAX_VALUE))
+            .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jCustomerLayout.createSequentialGroup()
+                    .addGap(245, 245, 245)
+                    .addComponent(lblMangeCustomer)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 275, Short.MAX_VALUE)
+                    .addComponent(btnToHome)
+                    .addGap(34, 34, 34))
+                .addGroup(jCustomerLayout.createSequentialGroup()
+                    .addGap(16, 16, 16)
+                    .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblCustId, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(134, 134, 134)
+                    .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCustId, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(356, 356, 356)))
+        );
+        jCustomerLayout.setVerticalGroup(
+            jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jCustomerLayout.createSequentialGroup()
+                .addGap(111, 111, 111)
+                .addComponent(lblFirstName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
+                .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCustSearch)
+                    .addComponent(btnCustUpdate)
+                    .addComponent(btnCustDelete)
+                    .addComponent(btnCusClear)
+                    .addComponent(btnCustomerAdd))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jCustomerLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jCustomerLayout.createSequentialGroup()
+                            .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jCustomerLayout.createSequentialGroup()
+                                    .addComponent(lblMangeCustomer)
+                                    .addGap(26, 26, 26))
+                                .addComponent(btnToHome, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtCustId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblCustId)))
+                        .addGroup(jCustomerLayout.createSequentialGroup()
+                            .addGap(104, 104, 104)
+                            .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(18, 18, 18)
+                    .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblLastName)
+                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(20, 20, 20)
+                    .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblAddress)
+                        .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblContactNo))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblEmail))
+                    .addGap(374, 374, 374)))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(263, 263, 263)
-                .addComponent(lblMangeCustomer)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
-                .addComponent(btnToHome)
-                .addGap(40, 40, 40))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCustomerAdd)
-                    .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCustId, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCustId, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCustSearch)
-                        .addGap(38, 38, 38)
-                        .addComponent(btnCustUpdate)
-                        .addGap(33, 33, 33)
-                        .addComponent(btnCustDelete)
-                        .addGap(27, 27, 27)
-                        .addComponent(btnCusClear)))
-                .addContainerGap(225, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(lblMangeCustomer)
-                        .addGap(26, 26, 26))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnToHome)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblFirstName)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtCustId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblCustId)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblLastName)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblAddress)
-                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtContactNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblContactNo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEmail))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCustomerAdd)
-                    .addComponent(btnCustSearch)
-                    .addComponent(btnCustUpdate)
-                    .addComponent(btnCustDelete)
-                    .addComponent(btnCusClear))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 26, Short.MAX_VALUE)
+                .addComponent(jCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -252,6 +281,7 @@ public class CustomerView extends javax.swing.JFrame {
 
     private void btnCustUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustUpdateActionPerformed
         // TODO add your handling code here:
+        updateCustomer();
     }//GEN-LAST:event_btnCustUpdateActionPerformed
 
     private void btnCustomerAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerAddActionPerformed
@@ -261,6 +291,8 @@ public class CustomerView extends javax.swing.JFrame {
 
     private void btnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToHomeActionPerformed
         // TODO add your handling code here:
+        new HomeView().close(this);
+        new HomeView().setVisible(true);
     }//GEN-LAST:event_btnToHomeActionPerformed
 
     private void txtCustIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustIdActionPerformed
@@ -269,12 +301,18 @@ public class CustomerView extends javax.swing.JFrame {
 
     private void btnCustDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustDeleteActionPerformed
         // TODO add your handling code here:
+        deleteCustomer();
     }//GEN-LAST:event_btnCustDeleteActionPerformed
 
     private void btnCusClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCusClearActionPerformed
         // TODO add your handling code here:
         clear();
     }//GEN-LAST:event_btnCusClearActionPerformed
+
+    private void tblCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCustomerMouseClicked
+        // TODO add your handling code here:
+        displayCustomer();
+    }//GEN-LAST:event_tblCustomerMouseClicked
     private void clear(){
         txtCustId.setText("");
         txtContactNo.setText("");
@@ -291,7 +329,6 @@ public class CustomerView extends javax.swing.JFrame {
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
-
             };
             
             tblCustomer.setModel(dtm);
@@ -309,37 +346,37 @@ public class CustomerView extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CustomerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CustomerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CustomerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CustomerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CustomerView().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(CustomerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(CustomerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(CustomerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(CustomerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new CustomerView().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCusClear;
@@ -348,6 +385,7 @@ public class CustomerView extends javax.swing.JFrame {
     private javax.swing.JButton btnCustUpdate;
     private javax.swing.JButton btnCustomerAdd;
     private javax.swing.JButton btnToHome;
+    private javax.swing.JPanel jCustomer;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblContactNo;
@@ -411,6 +449,73 @@ public class CustomerView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Not Found Details!!");
             clear();
         }
+    }
 
+    private void displayCustomer() {
+        if(!txtCustId.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "First Clear Loaded Customer Details!");
+            return;
+        }
+        int selectedRow=tblCustomer.getSelectedRow();
+        //{"Id", "Name", "Contact No", "Address", "Email"};
+        if(selectedRow!=-1){
+            DefaultTableModel model=(DefaultTableModel)tblCustomer.getModel();
+            
+            txtCustId.setText(String.valueOf(model.getValueAt(selectedRow, 0)));
+            String name=String.valueOf(model.getValueAt(selectedRow, 1));
+            txtFirstName.setText(name.split(" ")[0]);
+            txtLastName.setText(name.split(" ")[1]);
+            
+            txtAddress.setText(String.valueOf(model.getValueAt(selectedRow, 3)));
+            txtEmail.setText(String.valueOf(model.getValueAt(selectedRow, 4)));
+            txtContactNo.setText(String.valueOf(model.getValueAt(selectedRow, 2)));
+        }
+    }
+
+    private void updateCustomer() {
+        CustomerDto custDto=new CustomerDto();
+        
+        try {
+            System.out.println("cust dto");
+            custDto.setCustomerId(Integer.parseInt(txtCustId.getText()));
+            custDto.setAddress(txtAddress.getText());
+            custDto.setContactNo(Integer.parseInt(txtContactNo.getText()));
+            custDto.setFirstName(txtFirstName.getText());
+            custDto.setLastName(txtLastName.getText());
+            custDto.setEmail(txtEmail.getText());
+            
+            String result=customerController.updateCustomer(custDto);
+            if(result.equals("succeed")){
+                JOptionPane.showMessageDialog(rootPane, "Customer Updated Successfully");
+                clear();
+                loadCustomers();
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Customer Update Failed");
+            }
+        } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, "Error-Customer Update");
+        } 
+    }
+
+    private void deleteCustomer() {
+        int id=Integer.parseInt(txtCustId.getText());
+        int choice=JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Delete Customer",
+                JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
+        try {
+            if(choice==JOptionPane.YES_OPTION){
+                String result=customerController.deleteCustomer(id);
+                if(result.equals("succeed")){
+                   JOptionPane.showMessageDialog(null, " Deleted Customer Successfully");
+                   clear();
+                   loadCustomers();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Delete Customer Failed");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Error-Customer Delete");    
+        }
     }
 }
