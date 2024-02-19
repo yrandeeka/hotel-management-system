@@ -5,6 +5,7 @@
 package edu.hotel.layered.controller;
 
 import edu.hotel.layered.dto.RoomCategoryDto;
+import edu.hotel.layered.dto.RoomDto;
 import edu.hotel.layered.entity.RoomCategoryEntity;
 import edu.hotel.layered.service.custom.impl.RoomService;
 import java.util.List;
@@ -18,6 +19,14 @@ public class RoomController {
     
     public List<RoomCategoryDto> getAllRoomCategories() {
         return roomService.getAllRoomCategories();
+    }
+
+    public String saveRoom(RoomDto roomDto) {
+        return roomService.saveRoom(roomDto); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public List<RoomDto> getAllrooms() {
+        return roomService.getAllRooms();
     }
     
 }

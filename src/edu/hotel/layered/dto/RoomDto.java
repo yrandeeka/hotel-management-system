@@ -19,6 +19,7 @@ import lombok.Setter;
 @Setter
 public class RoomDto {
     private Integer roomId;
+    private String description;
     private String category;
     private String avaiable; 
 }

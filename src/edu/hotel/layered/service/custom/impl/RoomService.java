@@ -5,7 +5,9 @@
 package edu.hotel.layered.service.custom.impl;
 
 import edu.hotel.layered.dto.RoomCategoryDto;
+import edu.hotel.layered.dto.RoomDto;
 import edu.hotel.layered.entity.RoomCategoryEntity;
+import edu.hotel.layered.entity.RoomEntity;
 import edu.hotel.layered.repository.RoomRepository;
 import edu.hotel.layered.util.SessionFactoryConfiguration;
 import java.util.ArrayList;
@@ -26,15 +28,6 @@ public class RoomService {
         List<RoomCategoryDto> list=new ArrayList<>();
         try {
             List<RoomCategoryEntity> listEntity=roomRepository.getAllCategories(session);
-//            for (int i = 0; i < listEntity.size(); i++) {
-//                System.out.println("fffffffffff");
-//                list.add(new RoomCategoryDto(
-//                        listEntity.get(i).getId(),
-//                        listEntity.get(i).getOccupancy(),
-//                        listEntity.get(i).getBedSize(),
-//                        listEntity.get(i).getRate()
-//                ));
-//            }
             for (RoomCategoryEntity entity : listEntity) {
                 list.add(new RoomCategoryDto(
                         entity.getId(),
@@ -47,5 +40,45 @@ public class RoomService {
            return list;
         }
         return list;
+    }
+
+    public String saveRoom(RoomDto dto) {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            int result=roomRepository.save(dto,session);
+        
+            if(result==1){
+                transaction.commit();
+                return "succeed";
+            }else{
+                transaction.rollback();
+                return "failed";
+            }
+        } catch (Exception e) {
+             transaction.rollback();
+             return "Error-Save Room";
+        }
+    }
+
+    public List<RoomDto> getAllRooms() {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction(); 
+        
+        List<RoomDto> dtos=new ArrayList<>();
+        
+        List<RoomEntity> roomEntities=roomRepository.getAll(session);
+        
+        if(!roomEntities.isEmpty()){
+            for (int i = 0; i < roomEntities.size(); i++) {
+                dtos.add(new RoomDto(
+                        roomEntities.get(i).getRoomId(),
+                        roomEntities.get(i).getDescription(),
+                        "",
+                        roomEntities.get(i).getAvailable()
+                ));
+            }
+        }
+        return dtos;
     }
 }

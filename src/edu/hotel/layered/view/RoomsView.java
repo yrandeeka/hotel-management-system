@@ -7,9 +7,16 @@ package edu.hotel.layered.view;
 import edu.hotel.layered.controller.RoomCategoryController;
 import edu.hotel.layered.controller.RoomController;
 import edu.hotel.layered.dto.RoomCategoryDto;
+import edu.hotel.layered.dto.RoomDto;
 import edu.hotel.layered.entity.RoomCategoryEntity;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -50,7 +57,11 @@ public class RoomsView extends javax.swing.JFrame {
         cmbobxAvailable = new javax.swing.JComboBox<>();
         btnToHome = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblRoom = new javax.swing.JTable();
+        btnDeleteRoom = new javax.swing.JButton();
+        btnClearRoom = new javax.swing.JButton();
+        lblDescription = new javax.swing.JLabel();
+        txtRoomDescription = new javax.swing.JTextField();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -122,7 +133,7 @@ public class RoomsView extends javax.swing.JFrame {
             }
         });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblRoom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -133,40 +144,63 @@ public class RoomsView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tblRoom);
+
+        btnDeleteRoom.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnDeleteRoom.setText("Delete");
+        btnDeleteRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteRoomActionPerformed(evt);
+            }
+        });
+
+        btnClearRoom.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnClearRoom.setText("Clear");
+        btnClearRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearRoomActionPerformed(evt);
+            }
+        });
+
+        lblDescription.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblDescription.setText("Description");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(263, 263, 263)
+                .addComponent(lblManageRooms)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnToHome)
+                .addGap(39, 39, 39))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(263, 263, 263)
-                        .addComponent(lblManageRooms))
+                        .addGap(17, 17, 17)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblOccupancy, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnAddRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbobxAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSearchRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)
-                                .addComponent(btnUpdateRoom))
-                            .addComponent(cmbobxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnToHome)
-                .addGap(39, 39, 39))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmbobxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbobxAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(70, 70, 70)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnAddRoom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSearchRoom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnUpdateRoom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDeleteRoom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnClearRoom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,26 +209,36 @@ public class RoomsView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblManageRooms)
                     .addComponent(btnToHome))
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblRoomId)
-                    .addComponent(txtRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbobxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblOccupancy))
-                .addGap(18, 18, 18)
+                    .addComponent(lblRoomId)
+                    .addComponent(txtRoomId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddRoom))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(btnSearchRoom)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdateRoom)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDeleteRoom))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblDescription)
+                            .addComponent(txtRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblOccupancy)
+                            .addComponent(cmbobxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClearRoom)
                     .addComponent(lblAvailable)
                     .addComponent(cmbobxAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddRoom)
-                    .addComponent(btnSearchRoom)
-                    .addComponent(btnUpdateRoom))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -202,6 +246,7 @@ public class RoomsView extends javax.swing.JFrame {
 
     private void btnAddRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddRoomActionPerformed
         // TODO add your handling code here:
+        saveRoom();
     }//GEN-LAST:event_btnAddRoomActionPerformed
 
     private void btnSearchRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchRoomActionPerformed
@@ -222,6 +267,15 @@ public class RoomsView extends javax.swing.JFrame {
         // TODO add your handling code here:
         //loadRoomCategories();
     }//GEN-LAST:event_cmbobxCategoryActionPerformed
+
+    private void btnDeleteRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteRoomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteRoomActionPerformed
+
+    private void btnClearRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearRoomActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_btnClearRoomActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,6 +317,8 @@ public class RoomsView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddRoom;
+    private javax.swing.JButton btnClearRoom;
+    private javax.swing.JButton btnDeleteRoom;
     private javax.swing.JButton btnSearchRoom;
     private javax.swing.JButton btnToHome;
     private javax.swing.JButton btnUpdateRoom;
@@ -271,21 +327,77 @@ public class RoomsView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblAvailable;
+    private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblManageRooms;
     private javax.swing.JLabel lblOccupancy;
     private javax.swing.JLabel lblRoomId;
+    private javax.swing.JTable tblRoom;
+    private javax.swing.JTextField txtRoomDescription;
     private javax.swing.JTextField txtRoomId;
     // End of variables declaration//GEN-END:variables
 
     private void loadRoomCategories() {
         List<RoomCategoryDto> categories=roomController.getAllRoomCategories();
-        
+        String[] arr=new String[categories.size()];
         for(int i=0;i<categories.size();i++) {
-           System.out.println(categories.get(i).getOccupancy()+","+categories.get(i).getBedSize());
-           roomCategories.add(categories.get(i).getOccupancy()+","+categories.get(i).getBedSize());
+           //roomCategories.add(categories.get(i).getOccupancy()+","+categories.get(i).getBedSize());
+           arr[i]=categories.get(i).getOccupancy()+","+categories.get(i).getBedSize();
         }
-        cmbobxCategory.setSelectedItem(roomCategories);
+        cmbobxCategory.setModel(new DefaultComboBoxModel<>(arr));
+        
+        /*2nd method to convert ArrayList into String Array*/
+        //cmbobxCategory.setModel(new DefaultComboBoxModel<>(roomCategories.toArray(new String[0])));
+    }
+    private void loadRooms(){
+        try {
+            String columns[] = {"Id", "Description", "Category", "Available"};
+            DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            }; 
+            tblRoom.setModel(dtm);
+            List<RoomDto> roomDtos = roomController.getAllrooms();
+
+            for (RoomDto dto : roomDtos) {
+                Object[] rowData = {dto.getRoomId(), dto.getDescription()+dto.getCategory(),dto.getAvaiable()};
+                dtm.addRow(rowData);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Loading Error-"+e);
+        }
+    }
+
+    private void saveRoom() {
+        int choice=JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Save Room",
+                JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
+        try {
+            if(choice==JOptionPane.YES_OPTION){
+                String category=String.valueOf(cmbobxCategory.getSelectedItem());
+                String available=String.valueOf(cmbobxAvailable.getSelectedItem());
+                RoomDto roomDto=new RoomDto(0,txtRoomDescription.getText(),category,available);
+                String result=roomController.saveRoom(roomDto);
+                if(result.equals("succeed")){
+                   JOptionPane.showMessageDialog(null, " Saved Room Successfully");
+                   clear();
+                   loadRooms();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Save Room Failed");
+                }
+            }
+        } catch (Exception ex){
+            Logger.getLogger(CustomerView.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error Input Details");
+        }
+    }
+
+    private void clear() {
+        txtRoomId.setText("");
+        txtRoomDescription.setText("");
+        cmbobxCategory.setSelectedItem("Double,Twin");
+        cmbobxAvailable.setSelectedItem("Yes");
     }
 }

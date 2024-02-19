@@ -69,7 +69,7 @@ public class RoomCategoriesView extends javax.swing.JFrame {
         lblOccupancy.setText("Occupancy");
 
         cmbobxOccupancy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cmbobxOccupancy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Single", "Double\t", "Triple", "Quad" }));
+        cmbobxOccupancy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Single", "Double", "Triple", "Quad" }));
 
         txtRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -374,15 +374,12 @@ public class RoomCategoriesView extends javax.swing.JFrame {
         try {
             if(!txtCategoryId.getText().equals("")){
                 id=Integer.parseInt(txtCategoryId.getText());
-                System.out.println("fff");
             }
             else{
                 JOptionPane.showMessageDialog(rootPane, "Please Enter Category Id");
                 return;
             }
-            System.out.println("AAA");
             RoomCategoryDto dto=roomCategoryController.getRoomCategory(id);
-            System.out.println("bbb");
             cmbobxOccupancy.setSelectedItem(dto.getOccupancy());
             cmbobxBedsize.setSelectedItem(dto.getBedSize());
             txtRate.setText(String.valueOf(dto.getRate()));

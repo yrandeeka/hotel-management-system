@@ -40,6 +40,9 @@ public class RoomEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roomId;
     
+    @Column(name = "description", nullable = false,length = 200)
+    private String description;
+        
     @Column(name = "available", nullable = false,length = 100)
     private String available;
     
