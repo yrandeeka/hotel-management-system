@@ -22,11 +22,23 @@ public class RoomController {
     }
 
     public String saveRoom(RoomDto roomDto) {
-        return roomService.saveRoom(roomDto); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return roomService.saveRoom(roomDto); 
     }
-
+    
     public List<RoomDto> getAllrooms() {
         return roomService.getAllRooms();
+    }
+
+    public String updateRoom(RoomDto dto) {
+        return roomService.updateRoom(dto);
+    }
+
+    public String deleteCustomer(int id) {
+        return roomService.deleteRoom(id);
+    }
+
+    public RoomDto getRoom(int id) {
+        return roomService.getRoom(id);
     }
     
 }

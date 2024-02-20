@@ -26,19 +26,22 @@ public class RoomRepository {
         return roomCategoryList;
     }
 
+    private int getCategoryId(String category,Session session){
+        String occupancy=category.split(",")[0];
+        String bedSize=category.split(",")[1];
+        String sql="SELECT id FROM room_category WHERE occupancy=:occupancy AND bed_size=:bedSize";
+        Query<Integer> query=session.createSQLQuery(sql);
+        query.setParameter("occupancy", occupancy);
+        query.setParameter("bedSize", bedSize);
+        
+        return query.uniqueResult();
+    }
     public int save(RoomDto dto, Session session) {
-        String occupancy=dto.getCategory().split(",")[0];
-        String bedSize=dto.getCategory().split(",")[1];
-        String sql_1="SELECT id FROM room_category WHERE occupancy=:occupancy AND bed_size=:bedSize";
-        Query<Integer> query_1=session.createSQLQuery(sql_1);
-        query_1.setParameter("occupancy", occupancy);
-        query_1.setParameter("bedSize", bedSize);
+        int categoryId=getCategoryId(dto.getCategory(),session);
         
-        int categoryId=query_1.uniqueResult();
-        
-        String sql_2 = "insert into room(description,available,category_id)"
+        String sql = "insert into room(description,available,category_id)"
                 + " VALUES(:description, :available, :category_id)";
-        Query query=session.createSQLQuery(sql_2);
+        Query query=session.createSQLQuery(sql);
         query.setParameter("description", dto.getDescription());
         query.setParameter("available", dto.getAvaiable());
         query.setParameter("category_id", categoryId);
@@ -47,24 +50,39 @@ public class RoomRepository {
     }
 
     public List<RoomEntity> getAll(Session session) {
-        String hql="SELECT room.id,room.available,room.category_id,room.description,"
-                + "room_category.bed_size,room_category.occupancy FROM room INNER JOIN room_category "
-                + "ON room.category_id=room_category.id;";
+        String hql="FROM RoomEntity";
         
-//        Query query = session.createSQLQuery(sql)
-//                    .addScalar("id", LongType.INSTANCE)
-//                    .addScalar("available", BooleanType.INSTANCE)
-//                    .addScalar("category_id", LongType.INSTANCE)
-//                    .addScalar("description", StringType.INSTANCE)
-//                    .addScalar("bed_size", StringType.INSTANCE)
-//                    .addScalar("occupancy", IntegerType.INSTANCE)
-//                    .setResultTransformer(Transformers.aliasToBean(RoomCategoryDTO.class));
-//
-//        List<RoomCategoryDTO> resultList = query.list();
-        
-        Query query=session.createQuery(hql);
+        Query<RoomEntity> query=session.createQuery(hql);
         List<RoomEntity> roomEntities=query.list();
         return roomEntities;
+    }
+
+    public int update(RoomDto dto, Session session) {
+        int categoryId=getCategoryId(dto.getCategory(),session);
+        String sql="UPDATE room SET description=:description,available=:available,"
+                + "category_id=:categoryId WHERE id=:roomId";
+        Query query=session.createSQLQuery(sql);
+        query.setParameter("roomId", dto.getRoomId());
+        query.setParameter("description", dto.getDescription());
+        query.setParameter("available", dto.getAvaiable());
+        query.setParameter("categoryId", categoryId);
+        
+        int rowCount=query.executeUpdate();
+        return rowCount;
+    }
+
+    public int delete(Session session, int id) {
+        String sql="DELETE FROM room WHERE id=:roomId";
+        Query query=session.createSQLQuery(sql);
+        query.setParameter("roomId", id);
+        System.out.println("FFFF");
+        
+        return query.executeUpdate();
+    }
+
+    public RoomEntity get(int id, Session session) {
+        RoomEntity entity=session.get(RoomEntity.class, id);
+        return entity;
     }
     
 }

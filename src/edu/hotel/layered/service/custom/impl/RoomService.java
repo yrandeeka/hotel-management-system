@@ -67,18 +67,75 @@ public class RoomService {
         
         List<RoomDto> dtos=new ArrayList<>();
         
-        List<RoomEntity> roomEntities=roomRepository.getAll(session);
+        List<RoomEntity> entities=roomRepository.getAll(session);
         
-        if(!roomEntities.isEmpty()){
-            for (int i = 0; i < roomEntities.size(); i++) {
+        if(!entities.isEmpty()){
+            for (int i = 0; i < entities.size(); i++) {
                 dtos.add(new RoomDto(
-                        roomEntities.get(i).getRoomId(),
-                        roomEntities.get(i).getDescription(),
-                        "",
-                        roomEntities.get(i).getAvailable()
+                        entities.get(i).getRoomId(),
+                        entities.get(i).getDescription(),
+                        entities.get(i).getRoomCategoryEntity().getOccupancy()+
+                                ","+entities.get(i).getRoomCategoryEntity().getBedSize(),
+                        entities.get(i).getAvailable()
                 ));
             }
         }
         return dtos;
+    }
+
+    public String updateRoom(RoomDto dto) {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction(); 
+        
+        try {
+            int count=roomRepository.update(dto,session);
+            if(count==1){
+                transaction.commit();
+                return "succeed";
+            }
+            else{
+                transaction.rollback();
+                return "failed";
+            }
+        } catch (Exception e) {
+            transaction.rollback();
+            return "Error-Update Room";
+        }
+    }
+
+    public String deleteRoom(int id) {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        
+        try {
+            int count=roomRepository.delete(session,id);
+            System.out.println("count"+count);
+            if(count==1){
+                transaction.commit();
+                return "succeed";
+            }
+            else{
+                transaction.rollback();
+                return "failed";
+            }
+        } catch (Exception e) {
+            transaction.rollback();
+            return "Error-Delete Customer";
+        }
+    }
+
+    public RoomDto getRoom(int id) {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        
+        RoomEntity entity=roomRepository.get(id,session);
+        RoomDto dto=new RoomDto();
+        
+        dto.setRoomId(entity.getRoomId());
+        dto.setDescription(entity.getDescription());
+        dto.setCategory(entity.getRoomCategoryEntity().getOccupancy()+","+entity.getRoomCategoryEntity().getBedSize());
+        dto.setAvaiable(entity.getAvailable());
+        
+        return dto;
     }
 }
