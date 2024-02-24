@@ -75,7 +75,6 @@ public class RoomRepository {
         String sql="DELETE FROM room WHERE id=:roomId";
         Query query=session.createSQLQuery(sql);
         query.setParameter("roomId", id);
-        System.out.println("FFFF");
         
         return query.executeUpdate();
     }

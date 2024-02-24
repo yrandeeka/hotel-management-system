@@ -43,4 +43,8 @@ public class RoomCategoryController {
     public String deleteRoomCategory(Integer id) {
         return roomCategoryService.deleteRoomCategory(id);
     }
+
+    public Double getRate(Integer id) {
+        return roomCategoryService.getRate(id);
+    }
 }

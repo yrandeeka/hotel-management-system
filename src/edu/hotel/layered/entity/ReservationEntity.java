@@ -40,8 +40,14 @@ public class ReservationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name = "reserved_date",nullable = false)
-    private Date reservedDate;
+    @Column(name = "booking_date",nullable = false)
+    private Date bookingDate;
+    
+    @Column(name = "reserved_from",nullable = false)
+    private Date reservedFrom;
+    
+    @Column(name = "reserved_to",nullable = false)
+    private Date reservedTo;
     
     @Column(name = "check_in",nullable = true)
     private Date checkIn;

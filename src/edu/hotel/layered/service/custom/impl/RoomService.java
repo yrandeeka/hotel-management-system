@@ -137,5 +137,5 @@ public class RoomService {
         dto.setAvaiable(entity.getAvailable());
         
         return dto;
-    }
+    } 
 }

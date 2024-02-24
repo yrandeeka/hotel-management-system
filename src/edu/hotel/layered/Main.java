@@ -22,7 +22,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new HomeView().setVisible(true);
+        new ReservationView().setVisible(true);
         
         //Session session = SessionFactoryConfiguration.getInstance().getSession();
     }

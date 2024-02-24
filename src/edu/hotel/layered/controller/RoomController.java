@@ -39,6 +39,5 @@ public class RoomController {
 
     public RoomDto getRoom(int id) {
         return roomService.getRoom(id);
-    }
-    
+    }    
 }

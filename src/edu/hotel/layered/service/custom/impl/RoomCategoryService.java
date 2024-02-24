@@ -114,4 +114,10 @@ public class RoomCategoryService {
         }
     }
 
+    public Double getRate(Integer id) {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction(); 
+        return roomCategoryRepository.getRate(id,session);
+    }
+
 }

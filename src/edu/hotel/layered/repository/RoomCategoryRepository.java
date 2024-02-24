@@ -59,4 +59,17 @@ public class RoomCategoryRepository {
         
         return query.executeUpdate(); 
     }
+
+    public Double getRate(Integer id, Session session) {
+        System.out.println("Repo pass id"+id);
+        String sqlCategoryId="SELECT category_id FROM room WHERE id=:id";
+        Query<Integer> QueryCategoryId=session.createSQLQuery(sqlCategoryId);
+        QueryCategoryId.setParameter("id", id);
+        Integer catId=QueryCategoryId.uniqueResult();
+        
+        String sqlRate="SELECT rate  FROM room_category WHERE id=:id";
+        Query<Double> queryRate=session.createSQLQuery(sqlRate);
+        queryRate.setParameter("id", catId);
+        return queryRate.uniqueResult();
+    }
 }
