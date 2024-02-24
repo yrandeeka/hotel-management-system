@@ -152,10 +152,6 @@
                           </Group>
                           <Component id="jScrollPane1" min="-2" pref="827" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="544" max="-2" attributes="0"/>
-                              <Component id="jLabel4" min="-2" pref="253" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
                               <Component id="btnAddReservation" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                               <Component id="btnSearchReservation" min="-2" max="-2" attributes="0"/>
@@ -173,8 +169,16 @@
                           <Component id="lblRoomDescription" min="-2" pref="121" max="-2" attributes="0"/>
                           <Component id="lblReservationFrom" min="-2" pref="121" max="-2" attributes="0"/>
                           <Component id="lblReservationTo" min="-2" pref="121" max="-2" attributes="0"/>
-                          <Component id="lblCheckoutDate" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
                           <Component id="lblCheckinDate" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="lblCheckoutDate" min="-2" pref="121" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="319" max="-2" attributes="0"/>
+                              <Component id="lblOutstanding" min="-2" pref="121" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtOutstanding" min="-2" pref="154" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel4" min="-2" pref="253" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -329,12 +333,6 @@
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="dtchooserCheckout" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="lblCheckoutDate" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -353,6 +351,18 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="178" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblOutstanding" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtOutstanding" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -476,10 +486,13 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Deposit"/>
+        <Property name="text" type="java.lang.String" value="Deposit (Rs.)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtDeposit">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtDepositKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblBookingDate">
       <Properties>
@@ -495,6 +508,9 @@
           <Connection code="Calendar.getInstance().getTime()" type="code"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="dtchooserReservationFromPropertyChange"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblCheckinDate">
       <Properties>
@@ -510,6 +526,9 @@
           <Connection code="Calendar.getInstance().getTime()" type="code"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="dtchooserCheckoutPropertyChange"/>
+      </Events>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="dtchooserCheckin">
       <Properties>
@@ -518,7 +537,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="dtchooserCheckinInputMethodTextChanged"/>
+        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="dtchooserCheckinPropertyChange"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblTotalCharge">
@@ -537,8 +556,6 @@
       </Properties>
       <Events>
         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cmbobxPkgTypeItemStateChanged"/>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cmbobxPkgTypeMouseClicked"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbobxPkgTypeActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -623,6 +640,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtRoomDescription">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtRoomDescriptionKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblCustomerDetails">
       <Properties>
@@ -662,8 +682,23 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="dtchooserReservationToInputMethodTextChanged"/>
         <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="dtchooserReservationToPropertyChange"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblOutstanding">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Outstanding (Rs.)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtOutstanding">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOutstandingActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
