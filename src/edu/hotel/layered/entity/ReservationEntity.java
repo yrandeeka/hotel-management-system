@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -74,6 +75,10 @@ public class ReservationEntity {
     @JoinColumn(name = "customer_id",nullable = false)
     private CustomerEntity customerEntity;
     
-    @ManyToMany(mappedBy = "reservationEntities",targetEntity = RoomEntity.class)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "reservation_room",
+            joinColumns = {@JoinColumn(name = "reservation_id")},
+            inverseJoinColumns = {@JoinColumn(name = "room_id")}
+    )
     private List<RoomEntity> roomEntities=new ArrayList<>();
 }

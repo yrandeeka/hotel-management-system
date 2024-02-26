@@ -5,6 +5,7 @@
 package edu.hotel.layered.dto;
 
 import java.util.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +22,12 @@ import lombok.Setter;
 public class ReservationDto {
     private Integer reservationId;
     private String customerName;
-    private String roomDescription;
-    private String bookingDate;
-    private String reservedFrom;
-    private String reservedTo;
-    private String checkIn;
-    private String checkOut;
+    private List roomDescription;
+    private Date bookingDate;
+    private Date reservedFrom;
+    private Date reservedTo;
+    private Date checkIn;
+    private Date checkOut;
     private String packageType;
     private Double packageRate;
     private Double totalCharge;

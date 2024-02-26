@@ -113,6 +113,12 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
     </Container>
+    <Container class="javax.swing.JPopupMenu" name="popupMenuSelectedRooms">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+    </Container>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -145,13 +151,7 @@
                       <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="251" max="-2" attributes="0"/>
-                              <Component id="lblManageReservations" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="257" max="-2" attributes="0"/>
-                              <Component id="btnToHome" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jScrollPane1" min="-2" pref="827" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                               <Component id="btnAddReservation" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                               <Component id="btnSearchReservation" min="-2" max="-2" attributes="0"/>
@@ -164,83 +164,104 @@
                               <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
                               <Component id="btnCancelReservation" min="-2" pref="182" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="lblBookingDate" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
-                          <Component id="lblCustName" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
-                          <Component id="lblRoomDescription" min="-2" pref="121" max="-2" attributes="0"/>
-                          <Component id="lblReservationFrom" min="-2" pref="121" max="-2" attributes="0"/>
-                          <Component id="lblReservationTo" min="-2" pref="121" max="-2" attributes="0"/>
-                          <Component id="lblCheckinDate" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="lblCheckoutDate" min="-2" pref="121" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="319" max="-2" attributes="0"/>
-                              <Component id="lblOutstanding" min="-2" pref="121" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtOutstanding" min="-2" pref="154" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel4" min="-2" pref="253" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblCheckinDate" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
+                                  <Component id="lblCheckoutDate" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="594" max="-2" attributes="0"/>
+                                      <Component id="jLabel4" min="-2" pref="253" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="dtchooserCheckin" min="-2" pref="116" max="-2" attributes="0"/>
+                                  <Component id="dtchooserCheckout" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="jScrollPane1" alignment="0" min="-2" pref="937" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="251" max="-2" attributes="0"/>
+                              <Component id="lblManageReservations" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnToHome" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="266" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="btnReservationId" min="-2" pref="103" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                          <Component id="btnReservationId" min="-2" pref="103" max="-2" attributes="0"/>
+                          <Component id="lblCustName" min="-2" pref="121" max="-2" attributes="0"/>
+                          <Component id="lblRoomDescription" min="-2" pref="121" max="-2" attributes="0"/>
+                          <Component id="lblBookingDate" min="-2" pref="121" max="-2" attributes="0"/>
+                          <Component id="lblReservationFrom" min="-2" pref="121" max="-2" attributes="0"/>
+                          <Component id="lblReservationTo" min="-2" pref="121" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="dtchooserBookingDate" min="-2" pref="116" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
+                              <Component id="btnSelectedRooms" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblPkgType" min="-2" pref="121" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="txtReservationId" min="-2" pref="88" max="-2" attributes="0"/>
-                                  <Component id="txtBookingDate" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtCustName" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
-                                          <Component id="txtRoomDescription" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="184" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lblRoomDetails" min="-2" pref="449" max="-2" attributes="0"/>
-                                          <Component id="lblCustomerDetails" min="-2" pref="449" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="153" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="dtchooserCheckout" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
+                                  <Component id="dtchooserReservationTo" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="dtchooserReservationFrom" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
-                                          <Component id="dtchooserCheckin" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
-                                          <Component id="dtchooserReservationTo" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="171" max="-2" attributes="0"/>
+                                      <Component id="dtchooserReservationFrom" min="-2" pref="116" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Component id="lblDeposit" min="-2" pref="121" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
+                                              <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                                  <Component id="txtOutstanding" min="-2" pref="154" max="-2" attributes="0"/>
                                                   <Component id="txtDeposit" min="-2" pref="154" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="lblPkgType" min="-2" pref="121" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="cmbobxPkgType" min="-2" pref="154" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="148" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="txtDeposit1" min="-2" pref="154" max="-2" attributes="0"/>
+                                                      <Component id="cmbobxPkgType" min="-2" pref="154" max="-2" attributes="0"/>
+                                                      <Component id="txtTotalCharge" alignment="0" min="-2" pref="154" max="-2" attributes="0"/>
+                                                  </Group>
                                               </Group>
                                           </Group>
-                                          <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                               <Component id="lblTotalCharge" min="-2" pref="121" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="txtTotalCharge" min="-2" pref="154" max="-2" attributes="0"/>
+                                              <Component id="lblNoOfPkgs" min="-2" pref="121" max="-2" attributes="0"/>
+                                              <Component id="lblDeposit" alignment="1" min="-2" pref="121" max="-2" attributes="0"/>
+                                              <Component id="lblOutstanding" alignment="1" min="-2" pref="121" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
                               </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="txtCustName" min="-2" pref="180" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="lblCustomerDetails" min="-2" pref="449" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="txtRoomDescription" min="-2" pref="180" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="lblRoomDetails" min="-2" pref="449" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="155" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace min="775" pref="775" max="-2" attributes="0"/>
                       <Component id="jLabel6" min="-2" pref="412" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -250,121 +271,136 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="btnReservationId" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="btnToHome" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblManageReservations" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnToHome" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txtReservationId" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblCustName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCustName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblCustomerDetails" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="23" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtRoomDescription" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblRoomDetails" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="lblRoomDescription" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="btnSelectedRooms" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblPkgType" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="cmbobxPkgType" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="dtchooserBookingDate" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="dtchooserReservationFrom" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblNoOfPkgs" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtDeposit1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblManageReservations" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtReservationId" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnReservationId" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lblBookingDate" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="lblReservationFrom" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                              <Component id="lblCustomerDetails" min="-2" pref="17" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lblRoomDetails" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="txtCustName" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblCustName" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblRoomDescription" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtRoomDescription" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblBookingDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtBookingDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="dtchooserReservationTo" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblReservationTo" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              <Component id="dtchooserReservationFrom" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="dtchooserReservationTo" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="dtchooserCheckin" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblCheckinDate" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                              <Component id="lblReservationFrom" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lblReservationTo" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lblCheckinDate" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="4" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                              <Component id="dtchooserCheckin" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="8" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblPkgType" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbobxPkgType" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblTotalCharge" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtTotalCharge" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblDeposit" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtDeposit" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="15" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblDeposit" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtDeposit" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="dtchooserCheckout" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblCheckoutDate" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnAddReservation" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnSearchReservation" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnUpdateReservation" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnUpdateReservation1" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="btnUpdateReservation2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnCancelReservation" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="178" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblOutstanding" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtOutstanding" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtOutstanding" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblOutstanding" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblCheckoutDate" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="dtchooserCheckout" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
+              <EmptySpace pref="21" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnAddReservation" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSearchReservation" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnUpdateReservation" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnUpdateReservation1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="btnUpdateReservation2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnCancelReservation" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="162" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -574,7 +610,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Pakage Type"/>
+        <Property name="text" type="java.lang.String" value="Package Type"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTotalCharge">
@@ -641,6 +677,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtRoomDescription">
       <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtRoomDescriptionActionPerformed"/>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtRoomDescriptionKeyReleased"/>
       </Events>
     </Component>
@@ -660,11 +697,6 @@
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Reservation From"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtBookingDate">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblReservationTo">
@@ -699,6 +731,39 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOutstandingActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSelectedRooms">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Selected Rooms"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnSelectedRoomsMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectedRoomsActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblNoOfPkgs">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="No of Packages"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtDeposit1">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtDeposit1KeyReleased"/>
+      </Events>
+    </Component>
+    <Component class="com.toedter.calendar.JDateChooser" name="dtchooserBookingDate">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="minSelectableDate" type="java.util.Date" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Calendar.getInstance().getTime()" type="code"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="dtchooserBookingDatePropertyChange"/>
       </Events>
     </Component>
   </SubComponents>

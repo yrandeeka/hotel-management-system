@@ -49,9 +49,11 @@ public class ReservationView extends javax.swing.JFrame {
     RoomCategoryController roomCategoryController;
     ReservationController reservationController;
     List<CustomerDto> cusDtos=new ArrayList<CustomerDto>();
+    List<String> selectedRooms=new ArrayList<String>();
     List<RoomDto> roomDtos=new ArrayList<RoomDto>();
     String[] pkgTypes;
     Double totalCharge=0.0;
+    String selectedRoomMessage="Not Found Selected Rooms!";
     /**
      * Creates new form ReservationView
      */
@@ -153,6 +155,7 @@ public class ReservationView extends javax.swing.JFrame {
         scrollRoom = new javax.swing.JScrollPane();
         listRoom = new javax.swing.JList<>();
         popupMenuRoom = new javax.swing.JPopupMenu();
+        popupMenuSelectedRooms = new javax.swing.JPopupMenu();
         lblManageReservations = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -186,11 +189,14 @@ public class ReservationView extends javax.swing.JFrame {
         lblCustomerDetails = new javax.swing.JLabel();
         lblRoomDetails = new javax.swing.JLabel();
         lblReservationFrom = new javax.swing.JLabel();
-        txtBookingDate = new javax.swing.JTextField();
         lblReservationTo = new javax.swing.JLabel();
         dtchooserReservationTo = new com.toedter.calendar.JDateChooser();
         lblOutstanding = new javax.swing.JLabel();
         txtOutstanding = new javax.swing.JTextField();
+        btnSelectedRooms = new javax.swing.JButton();
+        lblNoOfPkgs = new javax.swing.JLabel();
+        txtDeposit1 = new javax.swing.JTextField();
+        dtchooserBookingDate = new com.toedter.calendar.JDateChooser();
 
         listCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -341,7 +347,7 @@ public class ReservationView extends javax.swing.JFrame {
         lblCheckoutDate.setText("Check out Date");
 
         lblPkgType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblPkgType.setText("Pakage Type");
+        lblPkgType.setText("Package Type");
 
         txtTotalCharge.setEditable(false);
 
@@ -386,6 +392,11 @@ public class ReservationView extends javax.swing.JFrame {
             }
         });
 
+        txtRoomDescription.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRoomDescriptionActionPerformed(evt);
+            }
+        });
         txtRoomDescription.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtRoomDescriptionKeyReleased(evt);
@@ -398,8 +409,6 @@ public class ReservationView extends javax.swing.JFrame {
 
         lblReservationFrom.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblReservationFrom.setText("Reservation From");
-
-        txtBookingDate.setEditable(false);
 
         lblReservationTo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblReservationTo.setText("Reservation To");
@@ -421,6 +430,35 @@ public class ReservationView extends javax.swing.JFrame {
             }
         });
 
+        btnSelectedRooms.setText("Selected Rooms");
+        btnSelectedRooms.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSelectedRoomsMouseClicked(evt);
+            }
+        });
+        btnSelectedRooms.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectedRoomsActionPerformed(evt);
+            }
+        });
+
+        lblNoOfPkgs.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblNoOfPkgs.setText("No of Packages");
+
+        txtDeposit1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDeposit1KeyReleased(evt);
+            }
+        });
+
+        dtchooserBookingDate.setEnabled(false);
+        dtchooserBookingDate.setMinSelectableDate(Calendar.getInstance().getTime());
+        dtchooserBookingDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                dtchooserBookingDatePropertyChange(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -431,12 +469,7 @@ public class ReservationView extends javax.swing.JFrame {
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(251, 251, 251)
-                                .addComponent(lblManageReservations)
-                                .addGap(257, 257, 257)
-                                .addComponent(btnToHome))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 827, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
                                 .addComponent(btnAddReservation)
                                 .addGap(12, 12, 12)
                                 .addComponent(btnSearchReservation)
@@ -448,157 +481,183 @@ public class ReservationView extends javax.swing.JFrame {
                                 .addComponent(btnUpdateReservation2)
                                 .addGap(85, 85, 85)
                                 .addComponent(btnCancelReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblBookingDate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCustName, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblReservationFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCheckinDate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblCheckoutDate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(319, 319, 319)
-                                .addComponent(lblOutstanding, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtOutstanding, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblCheckinDate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblCheckoutDate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(32, 32, 32)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(594, 594, 594)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(dtchooserCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dtchooserCheckout, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 937, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(251, 251, 251)
+                                .addComponent(lblManageReservations)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnToHome)
+                                .addGap(266, 266, 266))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnReservationId, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCustName, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBookingDate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblReservationFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(dtchooserBookingDate, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(88, 88, 88)
+                                .addComponent(btnSelectedRooms)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblPkgType, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnReservationId, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtReservationId, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtBookingDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dtchooserReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtCustName, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(184, 184, 184)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblRoomDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lblCustomerDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(153, 153, 153)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dtchooserCheckout, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dtchooserReservationFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(dtchooserCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(dtchooserReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(171, 171, 171)
+                                        .addComponent(dtchooserReservationFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(222, 222, 222)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                    .addComponent(lblDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtOutstanding, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(txtDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createSequentialGroup()
-                                                    .addComponent(lblPkgType, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(cmbobxPkgType, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addGroup(layout.createSequentialGroup()
+                                                    .addGap(148, 148, 148)
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(txtDeposit1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(cmbobxPkgType, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(txtTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addComponent(lblTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                                                .addComponent(lblNoOfPkgs, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lblDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(lblOutstanding, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtCustName, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblCustomerDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblRoomDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(155, 155, 155))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(775, 775, 775)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 3, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnReservationId)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(btnToHome))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblManageReservations)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblManageReservations)
+                            .addComponent(btnToHome))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtReservationId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnReservationId))))
+                        .addComponent(txtReservationId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCustName)
+                    .addComponent(txtCustName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCustomerDetails))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblRoomDetails))
+                    .addComponent(lblRoomDescription))
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(lblCustomerDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblRoomDetails))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtCustName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblCustName))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblRoomDescription)
-                                    .addComponent(txtRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblBookingDate)
-                                    .addComponent(txtBookingDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(btnSelectedRooms)
+                                    .addComponent(lblPkgType)
+                                    .addComponent(cmbobxPkgType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 3, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(dtchooserBookingDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addComponent(dtchooserReservationFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(dtchooserReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(dtchooserCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(lblReservationFrom)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblReservationTo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblCheckinDate)
-                                .addGap(0, 4, Short.MAX_VALUE))))
+                                .addGap(12, 12, 12))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblNoOfPkgs)
+                                    .addComponent(txtDeposit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(16, 16, 16))))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblPkgType)
-                            .addComponent(cmbobxPkgType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
+                        .addComponent(lblBookingDate)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblReservationFrom)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dtchooserReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblReservationTo, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(lblCheckinDate)
+                                .addGap(0, 3, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(dtchooserCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTotalCharge)
                             .addComponent(txtTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblDeposit)
-                            .addComponent(txtDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)))
+                .addComponent(jLabel6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dtchooserCheckout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCheckoutDate, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAddReservation)
-                            .addComponent(btnSearchReservation)
-                            .addComponent(btnUpdateReservation)
-                            .addComponent(btnUpdateReservation1)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnUpdateReservation2)
-                                .addComponent(btnCancelReservation)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
                         .addGap(6, 6, 6)
+                        .addComponent(jLabel4)
+                        .addGap(2, 2, 2)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lblOutstanding)
-                                .addComponent(txtOutstanding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel4))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(txtOutstanding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOutstanding))
+                        .addGap(0, 6, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCheckoutDate, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(dtchooserCheckout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAddReservation)
+                    .addComponent(btnSearchReservation)
+                    .addComponent(btnUpdateReservation)
+                    .addComponent(btnUpdateReservation1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnUpdateReservation2)
+                        .addComponent(btnCancelReservation)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
         );
 
         pack();
@@ -611,6 +670,7 @@ public class ReservationView extends javax.swing.JFrame {
 
     private void btnSearchReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchReservationActionPerformed
         // TODO add your handling code here:
+        searchReservation();
     }//GEN-LAST:event_btnSearchReservationActionPerformed
 
     private void btnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToHomeActionPerformed
@@ -623,6 +683,7 @@ public class ReservationView extends javax.swing.JFrame {
 
     private void btnUpdateReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateReservationActionPerformed
         // TODO add your handling code here:
+        updateReservation();
     }//GEN-LAST:event_btnUpdateReservationActionPerformed
 
     private void btnUpdateReservation1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateReservation1ActionPerformed
@@ -643,11 +704,13 @@ public class ReservationView extends javax.swing.JFrame {
 
     private void listCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCustomerMouseClicked
         // TODO add your handling code here:
+        if(listCustomer.getSelectedValue()!=null){
         Integer id=Integer.parseInt(listCustomer.getSelectedValue().split("-")[0]);
         
-        for (CustomerDto dto : cusDtos) {
-            if(dto.getCustomerId().equals(id)){
-                lblCustomerDetails.setText("Contact : "+dto.getContactNo()+" | Email : "+dto.getEmail()+" | Address : "+dto.getAddress());
+            for (CustomerDto dto : cusDtos) {
+                if(dto.getCustomerId().equals(id)){
+                    lblCustomerDetails.setText("Contact : "+dto.getContactNo()+" | Email : "+dto.getEmail()+" | Address : "+dto.getAddress());
+                }
             }
         }
         txtCustName.setText(listCustomer.getSelectedValue());      
@@ -662,14 +725,23 @@ public class ReservationView extends javax.swing.JFrame {
                 lblRoomDetails.setText("Category : "+dto.getCategory());
             }
         }
-        txtRoomDescription.setText(listRoom.getSelectedValue());
-        setTotalCharge(id);
+        if(!selectedRooms.contains(listRoom.getSelectedValue())){
+            selectedRooms.add(listRoom.getSelectedValue());
+            txtRoomDescription.setText(listRoom.getSelectedValue());
+            setTotalCharge(id);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Already in Selected Room List");
+        }
+        
     }//GEN-LAST:event_listRoomMouseClicked
 
     private void cmbobxPkgTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbobxPkgTypeItemStateChanged
         // TODO add your handling code here:
-        Integer id=Integer.parseInt(listRoom.getSelectedValue().split("-")[0]);
-        setTotalCharge(id);
+        if(listRoom.getSelectedValue()!=null){
+            Integer id=Integer.parseInt(listRoom.getSelectedValue().split("-")[0]);
+            setTotalCharge(id);
+        }
     }//GEN-LAST:event_cmbobxPkgTypeItemStateChanged
 
     private void dtchooserReservationToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dtchooserReservationToPropertyChange
@@ -726,10 +798,46 @@ public class ReservationView extends javax.swing.JFrame {
     private void txtOutstandingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOutstandingActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtOutstandingActionPerformed
+
+    private void txtRoomDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRoomDescriptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRoomDescriptionActionPerformed
+
+    private void btnSelectedRoomsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSelectedRoomsMouseClicked
+        // TODO add your handling code here:
+        setSelectRooms();
+    }//GEN-LAST:event_btnSelectedRoomsMouseClicked
+
+    private void txtDeposit1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDeposit1KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDeposit1KeyReleased
+
+    private void btnSelectedRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectedRoomsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSelectedRoomsActionPerformed
+
+    private void dtchooserBookingDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dtchooserBookingDatePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dtchooserBookingDatePropertyChange
     
     /**
      * @param args the command line arguments
      */
+    private void setSelectRooms(){
+        if(selectedRooms.size()>0){
+            selectedRoomMessage="";
+            for (int i=1;i<=selectedRooms.size();i++) {
+                System.out.println("i"+i);
+                if(i<selectedRooms.size()){
+                    selectedRoomMessage+=i+") "+selectedRooms.get(i-1)+" , ";
+                }
+                else{
+                    selectedRoomMessage+=i+") "+selectedRooms.get(i-1);
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(null, selectedRoomMessage);
+    }
     private void checkDates(JDateChooser dateStart,JDateChooser dateEnd,String msg_1,String msg_2){
         if(dateEnd.getDate()!=null && dateStart.getDate()==null){
             JOptionPane.showMessageDialog(null, msg_1);
@@ -741,8 +849,8 @@ public class ReservationView extends javax.swing.JFrame {
             dateEnd.setDate(null);
         }
     }    
-    private String formattedDateAndTime(Date date){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private String formattedDateAndTime(Date date,String format){
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
         String formattedDateTime = formatter.format(date);
         return formattedDateTime;
     }
@@ -782,11 +890,13 @@ public class ReservationView extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelReservation;
     private javax.swing.JLabel btnReservationId;
     private javax.swing.JButton btnSearchReservation;
+    private javax.swing.JButton btnSelectedRooms;
     private javax.swing.JButton btnToHome;
     private javax.swing.JButton btnUpdateReservation;
     private javax.swing.JButton btnUpdateReservation1;
     private javax.swing.JButton btnUpdateReservation2;
     private javax.swing.JComboBox<String> cmbobxPkgType;
+    private com.toedter.calendar.JDateChooser dtchooserBookingDate;
     private com.toedter.calendar.JDateChooser dtchooserCheckin;
     private com.toedter.calendar.JDateChooser dtchooserCheckout;
     private com.toedter.calendar.JDateChooser dtchooserReservationFrom;
@@ -801,6 +911,7 @@ public class ReservationView extends javax.swing.JFrame {
     private javax.swing.JLabel lblCustomerDetails;
     private javax.swing.JLabel lblDeposit;
     private javax.swing.JLabel lblManageReservations;
+    private javax.swing.JLabel lblNoOfPkgs;
     private javax.swing.JLabel lblOutstanding;
     private javax.swing.JLabel lblPkgType;
     private javax.swing.JLabel lblReservationFrom;
@@ -814,12 +925,13 @@ public class ReservationView extends javax.swing.JFrame {
     private javax.swing.JPanel panelRoom;
     private javax.swing.JPopupMenu popupMenuCustomer;
     private javax.swing.JPopupMenu popupMenuRoom;
+    private javax.swing.JPopupMenu popupMenuSelectedRooms;
     private javax.swing.JScrollPane scrollCustomer;
     private javax.swing.JScrollPane scrollRoom;
     private javax.swing.JTable tblReservation;
-    private javax.swing.JTextField txtBookingDate;
     private javax.swing.JTextField txtCustName;
     private javax.swing.JTextField txtDeposit;
+    private javax.swing.JTextField txtDeposit1;
     private javax.swing.JTextField txtOutstanding;
     private javax.swing.JTextField txtReservationId;
     private javax.swing.JTextField txtRoomDescription;
@@ -849,23 +961,23 @@ public class ReservationView extends javax.swing.JFrame {
                 JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
         try {
             if(choice==JOptionPane.YES_OPTION){
-                String checkIn="";
-                String checkOut="";
+                Date checkIn = null;
+                Date checkOut = null;
                 String pkgType=String.valueOf(cmbobxPkgType.getSelectedItem());
                 Double pkgRate=setPkgRate(pkgType);
                 Double ttlCharge=txtTotalCharge.getText().isEmpty()?0.0:Double.parseDouble(txtTotalCharge.getText());
                 Double deposit=txtDeposit.getText().isEmpty()?0.0:Double.parseDouble(txtDeposit.getText());
                 
-                String bookedDate=formattedDateAndTime(new Date());
-                String reservedFrom=formattedDateAndTime(new Date(dtchooserReservationFrom.getDate().getTime()));
-                String reservedTo=formattedDateAndTime(new Date(dtchooserReservationTo.getDate().getTime()));
+                Date bookedDate=new Date();
+                Date reservedFrom=dtchooserReservationFrom.getDate();
+                Date reservedTo=dtchooserReservationTo.getDate();
                 if(dtchooserCheckin.getDate()!=null)
-                    checkIn=formattedDateAndTime(new Date(dtchooserCheckin.getDate().getTime()));
+                    checkIn=new Date(dtchooserCheckin.getDate().getTime());
                 if(dtchooserCheckout.getDate()!=null)
-                    checkOut=formattedDateAndTime(new Date(dtchooserCheckout.getDate().getTime()));
+                    checkOut=new Date(dtchooserCheckout.getDate().getTime());
                 
                 ReservationDto reservationDto=new ReservationDto(0,txtCustName.getText(),
-                    txtRoomDescription.getText(),bookedDate,reservedFrom,reservedTo,checkIn,checkOut,
+                    selectedRooms,bookedDate,reservedFrom,reservedTo,checkIn,checkOut,
                         pkgType,pkgRate,ttlCharge,deposit,"no");
 
                 String result=reservationController.saveReservation(reservationDto);
@@ -882,5 +994,72 @@ public class ReservationView extends javax.swing.JFrame {
             Logger.getLogger(CustomerView.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error Input Details");
         }
+    }
+    private void searchReservation() {
+         int id=0;
+        try {
+            if(!txtReservationId.getText().equals("")){
+                id=Integer.parseInt(txtReservationId.getText());
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Please Enter Reservation Id");
+                return;
+            }
+            ReservationDto dto=reservationController.getReservation(id);
+            
+            txtReservationId.setText(String.valueOf(dto.getReservationId()));
+            txtCustName.setText(dto.getCustomerName());
+            selectedRooms=dto.getRoomDescription();
+            txtRoomDescription.setText(selectedRooms.get(0));
+            dtchooserBookingDate.setDate(dto.getBookingDate());
+            dtchooserReservationFrom.setDate(dto.getReservedFrom());
+            dtchooserReservationTo.setDate(dto.getReservedTo());
+            dtchooserCheckin.setDate(dto.getCheckIn());
+            dtchooserCheckout.setDate(dto.getCheckOut());
+            cmbobxPkgType.setSelectedItem(dto.getPackageType());
+            txtTotalCharge.setText(String.valueOf(dto.getTotalCharge()));
+            txtDeposit.setText(String.valueOf(dto.getDeposit()));
+            txtOutstanding.setText(String.valueOf(dto.getTotalCharge()-dto.getDeposit()));
+            
+            
+            CustomerDto cusDto=customerController.getCustomer(Integer.parseInt(dto.getCustomerName().split("-")[0]));
+            lblCustomerDetails.setText("Contact : "+cusDto.getContactNo()+" | Email : "+cusDto.getEmail()+" | Address : "+cusDto.getAddress());
+            RoomDto rmDto=roomController.getRoom(Integer.parseInt(selectedRooms.get(0).split("-")[0]));
+            lblRoomDetails.setText("Category : "+rmDto.getCategory());
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Not Found Details!!-"+e);
+            //clear();
+        }
+    }
+
+    private void updateReservation() {
+        ReservationDto dto=new ReservationDto();
+        
+        try {
+            String pkgType=String.valueOf(cmbobxPkgType.getSelectedItem());
+            
+            dto.setReservationId(Integer.parseInt(txtReservationId.getText()));
+            dto.setCustomerName(txtCustName.getText());
+            dto.setRoomDescription(selectedRooms);
+            dto.setReservedFrom(dtchooserReservationFrom.getDate());
+            dto.setReservedTo(dtchooserReservationTo.getDate());
+            dto.setPackageType(pkgType);
+            dto.setPackageRate(setPkgRate(pkgType));
+            dto.setTotalCharge(Double.parseDouble(txtTotalCharge.getText()));
+            dto.setDeposit(Double.parseDouble(txtDeposit.getText()));
+            
+            String result=reservationController.updateReservation(dto);
+            if(result.equals("succeed")){
+                JOptionPane.showMessageDialog(rootPane, "Reservation Updated Successfully");
+                //clear();
+                //loadCustomers();
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Reservation Update Failed");
+            }
+        } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, "Error-Reservation Update");
+        } 
     }
 }

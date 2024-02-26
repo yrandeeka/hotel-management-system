@@ -50,10 +50,6 @@ public class RoomEntity {
     @JoinColumn(name = "category_id")
     private RoomCategoryEntity roomCategoryEntity;
     
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "reservation_room",
-            joinColumns = {@JoinColumn(name = "room_id")},
-            inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
-    )
+    @ManyToMany(mappedBy = "roomEntities",targetEntity = ReservationEntity.class)
     private List<ReservationEntity> reservationEntities=new ArrayList<>();
 }

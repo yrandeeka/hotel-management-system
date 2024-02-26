@@ -17,4 +17,12 @@ public class ReservationController {
     public String saveReservation(ReservationDto dto) {
         return reservationService.saveReservation(dto);
     }
+
+    public ReservationDto getReservation(int id) {
+        return reservationService.getReservation(id);
+    }
+
+    public String updateReservation(ReservationDto dto) {
+        return reservationService.updateReservation(dto);
+    }
 }
