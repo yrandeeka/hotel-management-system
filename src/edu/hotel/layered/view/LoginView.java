@@ -4,16 +4,21 @@
  */
 package edu.hotel.layered.view;
 
+import edu.hotel.layered.controller.LoginController;
+import edu.hotel.layered.dto.LoginDto;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Yasas Randeeka
  */
 public class LoginView extends javax.swing.JFrame {
-
+    LoginController loginController;
     /**
      * Creates new form LoginView
      */
     public LoginView() {
+        this.loginController=new LoginController();
         initComponents();
     }
 
@@ -133,6 +138,7 @@ public class LoginView extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
+        login();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
@@ -180,4 +186,29 @@ public class LoginView extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
+
+    private void login() {
+
+        try {
+            LoginDto dto=new LoginDto(txtUsername.getText(),String.valueOf(txtPassword.getPassword()));
+        
+            String result=loginController.login(dto);
+            switch (result) {
+                case "succeed":
+                    new HomeView().close(this);
+                    new HomeView().setVisible(true);
+                    break;
+                case "failed":
+                    JOptionPane.showMessageDialog(null, "Login Failed. Check Username and Password again");
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Login Error");
+                    break;
+            }
+        
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Login Error-Input");
+        }
+ 
+    }
 }

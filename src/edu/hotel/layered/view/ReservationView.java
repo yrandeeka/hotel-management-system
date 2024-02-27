@@ -99,15 +99,7 @@ public class ReservationView extends javax.swing.JFrame {
         });
         getContentPane().add(field, BorderLayout.NORTH);
     }
-//    private void setButton(JButton btn,JDateChooser dtChooser){
-//       btn.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                // Remove the property change listener
-//                dtChooser.removePropertyChangeListener("date", new MyDateListener());
-//            }
-//        });
-//    }
+
     private Date setMinResveredDate(){
         Date currentDate = new Date();
         // Create a Calendar instance and set it to the current date
@@ -270,6 +262,11 @@ public class ReservationView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblReservation.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblReservationMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblReservation);
 
         btnAddReservation.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -832,6 +829,11 @@ public class ReservationView extends javax.swing.JFrame {
     private void dtchooserReservationFromMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dtchooserReservationFromMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_dtchooserReservationFromMouseClicked
+
+    private void tblReservationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblReservationMouseClicked
+        // TODO add your handling code here:
+        displayReservations();
+    }//GEN-LAST:event_tblReservationMouseClicked
     
     /**
      * @param args the command line arguments
@@ -1170,13 +1172,41 @@ public class ReservationView extends javax.swing.JFrame {
                 }
                 Double outstanding=dto.getTotalCharge()-dto.getDeposit();
                 Object[] rowData = {dto.getReservationId(), dto.getCustomerName(),roomDes,
-                    dto.getBookingDate(),dto.getReservedFrom(), dto.getReservedTo(),dto.getCheckIn(),
+                    dto.getBookingDate(),formattedDateAndTime(dto.getReservedFrom(), "yyyy-MM-dd"), 
+                    formattedDateAndTime(dto.getReservedTo(), "yyyy-MM-dd"),dto.getCheckIn(),
                     dto.getCheckOut(),dto.getPackageType(),dto.getPackageRate(),dto.getNoOfPkgs(),dto.getTotalCharge(),
                     dto.getDeposit(),outstanding};
                 dtm.addRow(rowData);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Loading Error-"+e);
+        }
+    }
+
+    private void displayReservations() {
+        if(!txtReservationId.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "First Clear Loaded Reservation Details!");
+            return;
+        }
+        int selectedRow=tblReservation.getSelectedRow();
+        //{"Id", "Customer Name", "Room Description", "Booking"Reserevd From","Reserevd To","Check In","Check Out",
+        //        +"Pkg Type","pkg Rate","No of Pkgs","Total(Rs.)","Deposit","Outstanding"};
+        if(selectedRow!=-1){
+            DefaultTableModel model=(DefaultTableModel)tblReservation.getModel();
+            
+            txtReservationId.setText(String.valueOf(model.getValueAt(selectedRow, 0)));
+            txtCustName.setText(String.valueOf(model.getValueAt(selectedRow, 1)));
+            txtRoomDescription.setText(String.valueOf(model.getValueAt(selectedRow, 2)));
+            dtchooserBookingDate.setDate((Date) model.getValueAt(selectedRow, 3));
+            dtchooserReservationFrom.setDate((Date)(model.getValueAt(selectedRow, 4)));
+            dtchooserReservationTo.setDate((Date)(model.getValueAt(selectedRow, 5)));
+            dtchooserCheckin.setDate((Date)(model.getValueAt(selectedRow, 6)));
+            dtchooserCheckout.setDate((Date)(model.getValueAt(selectedRow, 7)));
+            cmbobxPkgType.setSelectedItem((model.getValueAt(selectedRow, 8)));
+            txtPkgAmount.setText(String.valueOf(model.getValueAt(selectedRow, 10)));
+            txtTotalCharge.setText(String.valueOf(model.getValueAt(selectedRow, 11)));
+            txtDeposit.setText(String.valueOf(model.getValueAt(selectedRow, 12)));
+            txtOutstanding.setText(String.valueOf(model.getValueAt(selectedRow, 13)));
         }
     }
 }

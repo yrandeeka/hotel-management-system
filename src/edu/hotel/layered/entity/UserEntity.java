@@ -4,6 +4,7 @@
  */
 package edu.hotel.layered.entity;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +28,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserEntity {
+public class UserEntity implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
