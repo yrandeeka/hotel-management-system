@@ -4,8 +4,11 @@
  */
 package edu.hotel.layered.controller;
 
+import com.toedter.calendar.JDateChooser;
 import edu.hotel.layered.dto.ReservationDto;
 import edu.hotel.layered.service.custom.impl.ReservationService;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -24,5 +27,13 @@ public class ReservationController {
 
     public String updateReservation(ReservationDto dto) {
         return reservationService.updateReservation(dto);
+    }
+
+    public List<ReservationDto> getReservationsAboveDate(Date date) {
+        return reservationService.getReservationsAboveDate(date); 
+    }
+
+    public List<ReservationDto> getAllReservations() {
+        return reservationService.getAllReservations();
     }
 }

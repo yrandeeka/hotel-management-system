@@ -62,6 +62,12 @@ public class ReservationEntity {
     @Column(name = "pkg_rate",nullable = false)
     private Double pkgRate;
     
+    @Column(name = "no_of_pkgs",nullable = false)
+    private Integer noOfPkgs;
+    
+    @Column(name = "extra_pay_Percentage",nullable = false)
+    private Double extraPayPercentage; 
+    
     @Column(name = "deposit",nullable = true)
     private Double deposit;
     

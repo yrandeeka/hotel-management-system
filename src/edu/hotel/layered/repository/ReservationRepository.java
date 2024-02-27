@@ -16,6 +16,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
 /**
@@ -29,18 +33,36 @@ public class ReservationRepository {
     }
 
     public ReservationEntity get(int id,Session session) {
-        ReservationEntity entity=session.get(ReservationEntity.class, id);
-        
+        ReservationEntity entity=session.get(ReservationEntity.class, id);  
         return entity;
     }
 
     public String update(ReservationEntity entity, Session session) {
-        System.out.println("entity.getId()-"+entity.getId());
-        System.out.println("entity.getReservedFrom()-"+entity.getReservedFrom());
-        System.out.println("entity.getReservedFrom()-"+entity.getRoomEntities().toArray());
-        
         session.update(entity);
         return "done";
     }
+
+    public List<ReservationEntity> getReservationsAboveDate(Session session,String column,Date date) {
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<ReservationEntity> criteriaQuery = criteriaBuilder.createQuery(ReservationEntity.class);
+        Root<ReservationEntity> root = criteriaQuery.from(ReservationEntity.class);
+        
+        // Define the condition for dates later than the current day
+        Predicate condition = criteriaBuilder.greaterThan(root.get(column), date);
+        
+        criteriaQuery.select(root).where(condition);
+        List<ReservationEntity> resultList = session.createQuery(criteriaQuery).getResultList();
+        
+        return resultList;
+    }
+
+    public List<ReservationEntity> getAll(Session session) {
+        String hql="FROM ReservationEntity";
+        
+        var query=session.createQuery(hql);
+        List<ReservationEntity> entities=query.list();
+        return entities;
+    }
+    
     
 }

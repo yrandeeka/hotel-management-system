@@ -30,6 +30,8 @@ public class ReservationDto {
     private Date checkOut;
     private String packageType;
     private Double packageRate;
+    private Integer noOfPkgs;
+    private Double extraPayPercentage;
     private Double totalCharge;
     private Double deposit;
     private String cancellation;
