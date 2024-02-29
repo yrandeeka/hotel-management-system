@@ -49,6 +49,7 @@ public class ReservationView extends javax.swing.JFrame {
     List<RoomDto> roomDtos=new ArrayList<RoomDto>();
     String[] pkgTypes;
     Double totalCharge=0.0;
+    Integer noOfpackages=0;
     Double extraPayPercentage=0.10;
     String selectedRoomMessage="Not Found Selected Rooms!";
     char searchClicked='N';
@@ -72,7 +73,7 @@ public class ReservationView extends javax.swing.JFrame {
         loadReservations();
     }
     private void loadPkgs(){
-        pkgTypes=new String[]{"Select","Full Board","Half Board","Bed and Breakfast"};
+        pkgTypes=new String[]{"Full Board","Half Board","Bed and Breakfast"};
         cmbobxPkgType.setModel(new DefaultComboBoxModel<>(pkgTypes));
     }
     private void setPopup(JTextField field,JPopupMenu menu){
@@ -110,24 +111,42 @@ public class ReservationView extends javax.swing.JFrame {
         // Get the new date after adding one day
         return calendar.getTime();
     }
-    private void setTotalCharge(Integer id){
+    private void setTotalCharge(){
         Double pkgRate;
-        Double roomRate=roomCategoryController.getRate(id);
-        String pkgType=String.valueOf(cmbobxPkgType.getSelectedItem());
-        
-        pkgRate=setPkgRate(pkgType);
+        Double roomRate=0.0;
+        Double totalPkgRate=0.0;
+        Integer noOfPkgs=0;
+        Integer id=0;
+        if(listRoom.getSelectedValue()!=null)
+            id=Integer.parseInt(listRoom.getSelectedValue().split("-")[0]);
 
-        totalCharge=(roomRate+(pkgRate*Integer.parseInt(txtPkgAmount.getText())))*(1+extraPayPercentage);
+        roomRate=roomCategoryController.getRate(id)==null?0.0:roomCategoryController.getRate(id);
+        System.out.println("roomRate"+roomRate);
+        String pkgType=String.valueOf(cmbobxPkgType.getSelectedItem());
+        pkgRate=setPkgRate(pkgType);
+        System.out.println("pkgRate-"+pkgRate);
+        noOfPkgs=Integer.parseInt(cmboboxNoOfPkgs.getSelectedItem().toString());
+        totalPkgRate=pkgRate*noOfPkgs;
+        System.out.println("totalPkgRate-"+totalPkgRate);
+        totalCharge=(roomRate+totalPkgRate)*getReservedDays()*(1+extraPayPercentage);
         txtTotalCharge.setText(String.valueOf(valueFormat(totalCharge)));
+        System.out.println("totalCharge-"+totalCharge);
+    }
+    private long getReservedDays(){
+        long reservedDays=0;
+        if(dtchooserReservationFrom.getDate()!=null && dtchooserReservationTo.getDate()!=null)
+            reservedDays=1+((dtchooserReservationFrom.getDate().getTime()-dtchooserReservationTo.getDate().getTime())/(1000*60*60*24));
+        System.out.println("reservedDays-"+reservedDays);
+        return reservedDays;
     }
     private Double setPkgRate(String pkgType){
         switch (pkgType) {
             case "Full Board":
-                return 30000.0;
+                return 15000.0;
             case "Half Board":
-                return 20000.0;
-            case "Bed and Breakfast":
                 return 10000.0;
+            case "Bed and Breakfast":
+                return 5000.0;
             default:
                 return 0.0;
         }
@@ -191,8 +210,9 @@ public class ReservationView extends javax.swing.JFrame {
         txtOutstanding = new javax.swing.JTextField();
         btnSelectedRooms = new javax.swing.JButton();
         lblNoOfPkgs = new javax.swing.JLabel();
-        txtPkgAmount = new javax.swing.JTextField();
         dtchooserBookingDate = new com.toedter.calendar.JDateChooser();
+        cmboboxNoOfPkgs = new javax.swing.JComboBox<>();
+        btnCalculateTotalCharge = new javax.swing.JButton();
 
         listCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -245,7 +265,7 @@ public class ReservationView extends javax.swing.JFrame {
                     .addGap(0, 6, Short.MAX_VALUE)))
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(153, 255, 255));
 
         lblManageReservations.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
@@ -302,11 +322,7 @@ public class ReservationView extends javax.swing.JFrame {
         lblDeposit.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblDeposit.setText("Deposit (Rs.)");
 
-        txtDeposit.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtDepositKeyReleased(evt);
-            }
-        });
+        txtDeposit.setText("0");
 
         lblBookingDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblBookingDate.setText("Booking Date");
@@ -343,12 +359,6 @@ public class ReservationView extends javax.swing.JFrame {
         lblTotalCharge.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTotalCharge.setText("Total Charge (Rs.)");
 
-        cmbobxPkgType.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbobxPkgTypeItemStateChanged(evt);
-            }
-        });
-
         lblCheckoutDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblCheckoutDate.setText("Check out Date");
 
@@ -356,6 +366,12 @@ public class ReservationView extends javax.swing.JFrame {
         lblPkgType.setText("Package Type");
 
         txtTotalCharge.setEditable(false);
+        txtTotalCharge.setText("0");
+        txtTotalCharge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalChargeActionPerformed(evt);
+            }
+        });
 
         btnReservationId.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnReservationId.setText("Reservation ID");
@@ -390,17 +406,6 @@ public class ReservationView extends javax.swing.JFrame {
             }
         });
 
-        txtRoomDescription.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtRoomDescriptionActionPerformed(evt);
-            }
-        });
-        txtRoomDescription.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtRoomDescriptionKeyReleased(evt);
-            }
-        });
-
         lblCustomerDetails.setText("Select a Customer!");
 
         lblRoomDetails.setText("Select a Room!");
@@ -422,6 +427,7 @@ public class ReservationView extends javax.swing.JFrame {
         lblOutstanding.setText("Outstanding (Rs.)");
 
         txtOutstanding.setEditable(false);
+        txtOutstanding.setText("0");
         txtOutstanding.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtOutstandingActionPerformed(evt);
@@ -443,17 +449,21 @@ public class ReservationView extends javax.swing.JFrame {
         lblNoOfPkgs.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblNoOfPkgs.setText("No of Packages");
 
-        txtPkgAmount.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtPkgAmountKeyReleased(evt);
-            }
-        });
-
         dtchooserBookingDate.setEnabled(false);
         dtchooserBookingDate.setMinSelectableDate(Calendar.getInstance().getTime());
         dtchooserBookingDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dtchooserBookingDatePropertyChange(evt);
+            }
+        });
+
+        cmboboxNoOfPkgs.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20" }));
+
+        btnCalculateTotalCharge.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnCalculateTotalCharge.setText("Calculate");
+        btnCalculateTotalCharge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalculateTotalChargeActionPerformed(evt);
             }
         });
 
@@ -478,11 +488,15 @@ public class ReservationView extends javax.swing.JFrame {
                             .addComponent(dtchooserReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dtchooserReservationFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dtchooserBookingDate, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(34, 34, 34)
-                                .addComponent(btnSelectedRooms)
-                                .addGap(72, 72, 72)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(dtchooserReservationFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(dtchooserBookingDate, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(34, 34, 34)
+                                        .addComponent(btnSelectedRooms))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(233, 233, 233)
+                                        .addComponent(btnCalculateTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -491,16 +505,17 @@ public class ReservationView extends javax.swing.JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                             .addGap(148, 148, 148)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtPkgAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(cmbobxPkgType, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addComponent(txtTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(cmboboxNoOfPkgs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(btnCancelReservation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(lblTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lblNoOfPkgs, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lblDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lblOutstanding, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lblPkgType, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(370, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -523,12 +538,6 @@ public class ReservationView extends javax.swing.JFrame {
                         .addComponent(jScrollPane1)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(251, 251, 251)
-                        .addComponent(lblManageReservations)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnToHome)
-                        .addContainerGap(584, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
@@ -537,10 +546,8 @@ public class ReservationView extends javax.swing.JFrame {
                                 .addComponent(btnSearchReservation)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnUpdateReservation)
-                                .addGap(28, 28, 28)
-                                .addComponent(btnUpdateReservation2)
-                                .addGap(27, 27, 27)
-                                .addComponent(btnCancelReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnUpdateReservation2))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblCheckinDate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -552,7 +559,13 @@ public class ReservationView extends javax.swing.JFrame {
                                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(dtchooserCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(dtchooserCheckout, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(251, 251, 251)
+                        .addComponent(lblManageReservations)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnToHome)
+                        .addGap(246, 246, 246))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -591,7 +604,7 @@ public class ReservationView extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblNoOfPkgs)
-                                    .addComponent(txtPkgAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cmboboxNoOfPkgs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(16, 16, 16))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -646,10 +659,11 @@ public class ReservationView extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnUpdateReservation)
                         .addComponent(btnUpdateReservation2)
-                        .addComponent(btnCancelReservation)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelReservation)
+                        .addComponent(btnCalculateTotalCharge)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -668,6 +682,8 @@ public class ReservationView extends javax.swing.JFrame {
 
     private void btnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToHomeActionPerformed
         // TODO add your handling code here:
+        new HomeView().close(this);
+        new HomeView().setVisible(true);
     }//GEN-LAST:event_btnToHomeActionPerformed
 
     private void btnCancelReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelReservationActionPerformed
@@ -719,21 +735,12 @@ public class ReservationView extends javax.swing.JFrame {
         if(!selectedRooms.contains(listRoom.getSelectedValue())){
             selectedRooms.add(listRoom.getSelectedValue());
             txtRoomDescription.setText(listRoom.getSelectedValue());
-            setTotalCharge(id);
         }
         else{
             JOptionPane.showMessageDialog(null, "Already in Selected Room List");
         }
         
     }//GEN-LAST:event_listRoomMouseClicked
-
-    private void cmbobxPkgTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbobxPkgTypeItemStateChanged
-        // TODO add your handling code here:
-        if(listRoom.getSelectedValue()!=null){
-            Integer id=Integer.parseInt(listRoom.getSelectedValue().split("-")[0]);
-            setTotalCharge(id);
-        }
-    }//GEN-LAST:event_cmbobxPkgTypeItemStateChanged
 
     private void dtchooserReservationToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dtchooserReservationToPropertyChange
         // TODO add your handling code here:
@@ -775,48 +782,14 @@ public class ReservationView extends javax.swing.JFrame {
                 "Check Out Date must be on or after Check In Date");
     }//GEN-LAST:event_dtchooserCheckoutPropertyChange
 
-    private void txtDepositKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDepositKeyReleased
-        // TODO add your handling code here:
-        try {
-            if(txtDeposit.getText()!=null){
-                txtOutstanding.setText(String.valueOf(valueFormat(totalCharge-Double.parseDouble(txtDeposit.getText()))));
-        }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Deposit Value - Error");
-            txtOutstanding.setText("0.0");
-        }
-        
-    }//GEN-LAST:event_txtDepositKeyReleased
-
-    private void txtRoomDescriptionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRoomDescriptionKeyReleased
-        // TODO add your handling code here:
-        try {
-            if(txtRoomDescription.getText()!=null && listRoom.getSelectedValue()!=null){
-                Integer id=Integer.parseInt(listRoom.getSelectedValue().split("-")[0]);
-                setTotalCharge(id);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Deposit Value - Error");
-            txtTotalCharge.setText("0.0");
-        }     
-    }//GEN-LAST:event_txtRoomDescriptionKeyReleased
-
     private void txtOutstandingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOutstandingActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtOutstandingActionPerformed
-
-    private void txtRoomDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRoomDescriptionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRoomDescriptionActionPerformed
 
     private void btnSelectedRoomsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSelectedRoomsMouseClicked
         // TODO add your handling code here:
         setSelectRooms();
     }//GEN-LAST:event_btnSelectedRoomsMouseClicked
-
-    private void txtPkgAmountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPkgAmountKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPkgAmountKeyReleased
 
     private void btnSelectedRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectedRoomsActionPerformed
         // TODO add your handling code here:
@@ -834,6 +807,17 @@ public class ReservationView extends javax.swing.JFrame {
         // TODO add your handling code here:
         displayReservations();
     }//GEN-LAST:event_tblReservationMouseClicked
+
+    private void txtTotalChargeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalChargeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalChargeActionPerformed
+
+    private void btnCalculateTotalChargeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculateTotalChargeActionPerformed
+        // TODO add your handling code here:
+        setTotalCharge();
+        Double outstanding=Double.parseDouble(txtTotalCharge.getText())-Double.parseDouble(txtDeposit.getText());
+        txtOutstanding.setText(String.valueOf(outstanding));
+    }//GEN-LAST:event_btnCalculateTotalChargeActionPerformed
     
     /**
      * @param args the command line arguments
@@ -943,6 +927,7 @@ public class ReservationView extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddReservation;
+    private javax.swing.JButton btnCalculateTotalCharge;
     private javax.swing.JButton btnCancelReservation;
     private javax.swing.JLabel btnReservationId;
     private javax.swing.JButton btnSearchReservation;
@@ -950,6 +935,7 @@ public class ReservationView extends javax.swing.JFrame {
     private javax.swing.JButton btnToHome;
     private javax.swing.JButton btnUpdateReservation;
     private javax.swing.JButton btnUpdateReservation2;
+    private javax.swing.JComboBox<String> cmboboxNoOfPkgs;
     private javax.swing.JComboBox<String> cmbobxPkgType;
     private com.toedter.calendar.JDateChooser dtchooserBookingDate;
     private com.toedter.calendar.JDateChooser dtchooserCheckin;
@@ -987,7 +973,6 @@ public class ReservationView extends javax.swing.JFrame {
     private javax.swing.JTextField txtCustName;
     private javax.swing.JTextField txtDeposit;
     private javax.swing.JTextField txtOutstanding;
-    private javax.swing.JTextField txtPkgAmount;
     private javax.swing.JTextField txtReservationId;
     private javax.swing.JTextField txtRoomDescription;
     private javax.swing.JTextField txtTotalCharge;
@@ -1019,7 +1004,7 @@ public class ReservationView extends javax.swing.JFrame {
                 Date checkIn = null;
                 Date checkOut = null;
                 String pkgType=String.valueOf(cmbobxPkgType.getSelectedItem());
-                Integer noOfPkgs=Integer.valueOf(txtPkgAmount.getText());
+                Integer noOfPkgs=Integer.parseInt(cmboboxNoOfPkgs.getSelectedItem().toString());
                 Double pkgRate=setPkgRate(pkgType);
                 Double ttlCharge=txtTotalCharge.getText().isEmpty()?0.0:Double.parseDouble(txtTotalCharge.getText());
                 Double deposit=txtDeposit.getText().isEmpty()?0.0:Double.parseDouble(txtDeposit.getText());
@@ -1074,7 +1059,7 @@ public class ReservationView extends javax.swing.JFrame {
             dtchooserCheckin.setDate(dto.getCheckIn());
             dtchooserCheckout.setDate(dto.getCheckOut());
             cmbobxPkgType.setSelectedItem(dto.getPackageType());
-            txtPkgAmount.setText(String.valueOf(dto.getNoOfPkgs()));
+            cmboboxNoOfPkgs.setSelectedItem(String.valueOf(dto.getNoOfPkgs()));
             txtTotalCharge.setText(String.valueOf(dto.getTotalCharge()));
             txtDeposit.setText(String.valueOf(dto.getDeposit()));
             txtOutstanding.setText(String.valueOf(dto.getTotalCharge()-dto.getDeposit()));
@@ -1109,7 +1094,7 @@ public class ReservationView extends javax.swing.JFrame {
                 dto.setCheckOut(new Date(dtchooserCheckout.getDate().getTime()));
                 dto.setPackageType(pkgType);
                 dto.setPackageRate(setPkgRate(pkgType));
-                dto.setNoOfPkgs(Integer.parseInt(txtPkgAmount.getText()));
+                dto.setNoOfPkgs(Integer.parseInt(cmboboxNoOfPkgs.getSelectedItem().toString()));
                 dto.setExtraPayPercentage(extraPayPercentage);
                 dto.setTotalCharge(Double.parseDouble(txtTotalCharge.getText()));
                 dto.setDeposit(Double.parseDouble(txtDeposit.getText()));
@@ -1141,11 +1126,13 @@ public class ReservationView extends javax.swing.JFrame {
         dtchooserReservationFrom.setDate(null);
         dtchooserCheckin.setDate(null);
         dtchooserCheckout.setDate(null);
-        cmbobxPkgType.setSelectedItem("Select");
+        cmbobxPkgType.setSelectedItem("Full Board");
+        cmboboxNoOfPkgs.setSelectedItem("1");
         txtTotalCharge.setText("");
         txtDeposit.setText("");
         txtOutstanding.setText("");
-        
+        selectedRooms=new ArrayList<>();
+        selectedRoomMessage="Not Found Selected Rooms!";
     }
 
     private void loadReservations() {
@@ -1203,7 +1190,7 @@ public class ReservationView extends javax.swing.JFrame {
             dtchooserCheckin.setDate((Date)(model.getValueAt(selectedRow, 6)));
             dtchooserCheckout.setDate((Date)(model.getValueAt(selectedRow, 7)));
             cmbobxPkgType.setSelectedItem((model.getValueAt(selectedRow, 8)));
-            txtPkgAmount.setText(String.valueOf(model.getValueAt(selectedRow, 10)));
+            cmboboxNoOfPkgs.setSelectedItem(String.valueOf(model.getValueAt(selectedRow, 10)));
             txtTotalCharge.setText(String.valueOf(model.getValueAt(selectedRow, 11)));
             txtDeposit.setText(String.valueOf(model.getValueAt(selectedRow, 12)));
             txtOutstanding.setText(String.valueOf(model.getValueAt(selectedRow, 13)));

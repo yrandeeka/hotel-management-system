@@ -117,7 +117,9 @@ public class RoomCategoryService {
     public Double getRate(Integer id) {
         Session session = SessionFactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction(); 
-        return roomCategoryRepository.getRate(id,session);
+        Double rate= roomCategoryRepository.getRate(id,session);
+        session.close();
+        return rate;
     }
 
 }

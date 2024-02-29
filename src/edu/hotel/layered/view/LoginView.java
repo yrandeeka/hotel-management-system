@@ -6,7 +6,20 @@ package edu.hotel.layered.view;
 
 import edu.hotel.layered.controller.LoginController;
 import edu.hotel.layered.dto.LoginDto;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.text.html.HTML;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -14,12 +27,15 @@ import javax.swing.JOptionPane;
  */
 public class LoginView extends javax.swing.JFrame {
     LoginController loginController;
+    Map<String, String> userDataMap = new HashMap<>();
     /**
      * Creates new form LoginView
      */
     public LoginView() {
         this.loginController=new LoginController();
         initComponents();
+        userDataMap.put("user", "admin");
+        userDataMap.put("password", "abc@1234");
     }
 
     /**
@@ -40,7 +56,7 @@ public class LoginView extends javax.swing.JFrame {
         btnExit = new javax.swing.JButton();
         btnLogin = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblWelcome.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
         lblWelcome.setText("Welcome To My Hotel ");
@@ -93,15 +109,15 @@ public class LoginView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtUsername)
                             .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnLogin)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnExit)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnExit)))))
-                .addContainerGap(264, Short.MAX_VALUE))
+                                .addComponent(btnLogin)))))
+                .addContainerGap(248, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,6 +150,12 @@ public class LoginView extends javax.swing.JFrame {
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
+        int choice=JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Exit From Application",
+                JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
+
+        if(choice==JOptionPane.YES_OPTION){
+                System.exit(0);
+        }
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
@@ -187,27 +209,41 @@ public class LoginView extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
+    private void clear(){
+        txtUsername.setText("");
+        txtPassword.setText("");
+    }
     private void login() {
-
         try {
-            LoginDto dto=new LoginDto(txtUsername.getText(),String.valueOf(txtPassword.getPassword()));
-        
-            String result=loginController.login(dto);
-            switch (result) {
-                case "succeed":
-                    new HomeView().close(this);
-                    new HomeView().setVisible(true);
-                    break;
-                case "failed":
-                    JOptionPane.showMessageDialog(null, "Login Failed. Check Username and Password again");
-                    break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Login Error");
-                    break;
+            if(txtUsername.getText().equals(userDataMap.get("user")) 
+                    && new String(txtPassword.getPassword()).equals(userDataMap.get("password"))){
+                new HomeView().close(this);
+                new HomeView().setVisible(true);
             }
+            else{
+                JOptionPane.showMessageDialog(null, "Login Failed. Check Username and Password again");
+                clear();
+            }
+//            LoginDto dto=new LoginDto(txtUsername.getText(),String.valueOf(txtPassword.getPassword()));
+//        
+//            String result=loginController.login(dto);
+//            switch (result) {
+//                case "succeed":
+//                    new HomeView().close(this);
+//                    new HomeView().setVisible(true);
+//                    break;
+//                case "failed":
+//                    JOptionPane.showMessageDialog(null, "Login Failed. Check Username and Password again");
+//                    break;
+//                default:
+//                    JOptionPane.showMessageDialog(null, "Login Error");
+//                    break;
+//            }
+        
         
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Login Error-Input");
+            JOptionPane.showMessageDialog(null, "Login Error-Inputs");
+            clear();
         }
  
     }

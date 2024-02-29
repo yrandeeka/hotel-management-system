@@ -41,8 +41,6 @@ public class HomeView extends javax.swing.JFrame {
         btnRoomCategories = new javax.swing.JButton();
         btnRooms = new javax.swing.JButton();
         btnReservations = new javax.swing.JButton();
-        btnCancelReservations = new javax.swing.JButton();
-        btnToHome1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -89,43 +87,23 @@ public class HomeView extends javax.swing.JFrame {
             }
         });
 
-        btnCancelReservations.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnCancelReservations.setText("Cancel Reservations");
-        btnCancelReservations.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelReservationsActionPerformed(evt);
-            }
-        });
-
-        btnToHome1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnToHome1.setText("Exit");
-        btnToHome1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnToHome1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jHomeLayout = new javax.swing.GroupLayout(jHome);
         jHome.setLayout(jHomeLayout);
         jHomeLayout.setHorizontalGroup(
             jHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jHomeLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(btnToHome1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addGap(22, 230, Short.MAX_VALUE)
                 .addComponent(lblHomePage, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(131, 131, 131)
                 .addComponent(btnToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
             .addGroup(jHomeLayout.createSequentialGroup()
                 .addGap(167, 167, 167)
-                .addGroup(jHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnCancelReservations, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnReservations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRooms, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRoomCategories, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnManageCust, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)))
+                .addGroup(jHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnReservations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRooms, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRoomCategories, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnManageCust, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))
                 .addContainerGap(211, Short.MAX_VALUE))
         );
         jHomeLayout.setVerticalGroup(
@@ -137,20 +115,16 @@ public class HomeView extends javax.swing.JFrame {
                         .addComponent(lblHomePage))
                     .addGroup(jHomeLayout.createSequentialGroup()
                         .addGap(16, 16, 16)
-                        .addGroup(jHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnToHome1)
-                            .addComponent(btnToHome))))
+                        .addComponent(btnToHome)))
                 .addGap(28, 28, 28)
                 .addComponent(btnManageCust)
-                .addGap(18, 18, 18)
+                .addGap(35, 35, 35)
                 .addComponent(btnRoomCategories)
-                .addGap(27, 27, 27)
+                .addGap(38, 38, 38)
                 .addComponent(btnRooms)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(btnReservations)
-                .addGap(29, 29, 29)
-                .addComponent(btnCancelReservations)
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addContainerGap(169, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -192,25 +166,21 @@ public class HomeView extends javax.swing.JFrame {
 
     private void btnReservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservationsActionPerformed
         // TODO add your handling code here:
+        close(this);
+        new ReservationView().setVisible(true);
     }//GEN-LAST:event_btnReservationsActionPerformed
-
-    private void btnCancelReservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelReservationsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCancelReservationsActionPerformed
 
     private void btnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToHomeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnToHomeActionPerformed
-
-    private void btnToHome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToHome1ActionPerformed
-        // TODO add your handling code here:
-        int choice=JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Exit From Application",
+        int choice=JOptionPane.showConfirmDialog(rootPane, "Are you sure?", "Logout From System",
                 JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
 
         if(choice==JOptionPane.YES_OPTION){
-                System.exit(0);
+                close(this);
+                new LoginView().setVisible(true);
         }
-    }//GEN-LAST:event_btnToHome1ActionPerformed
+        
+    }//GEN-LAST:event_btnToHomeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,13 +218,11 @@ public class HomeView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelReservations;
     private javax.swing.JButton btnManageCust;
     private javax.swing.JButton btnReservations;
     private javax.swing.JButton btnRoomCategories;
     private javax.swing.JButton btnRooms;
     private javax.swing.JButton btnToHome;
-    private javax.swing.JButton btnToHome1;
     private javax.swing.JPanel jHome;
     private javax.swing.JLabel lblHomePage;
     // End of variables declaration//GEN-END:variables
