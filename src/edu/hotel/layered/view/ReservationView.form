@@ -154,13 +154,13 @@
                   <Component id="lblBookingDate" min="-2" pref="121" max="-2" attributes="0"/>
                   <Component id="lblReservationFrom" min="-2" pref="121" max="-2" attributes="0"/>
                   <Component id="lblReservationTo" min="-2" pref="121" max="-2" attributes="0"/>
+                  <Component id="btnCheckRoomAvailability" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtReservationId" min="-2" pref="88" max="-2" attributes="0"/>
-                          <Component id="dtchooserReservationTo" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
@@ -243,7 +243,7 @@
                               <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
                               <Component id="btnUpdateReservation" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btnUpdateReservation2" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnClearReservation" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -258,6 +258,7 @@
                                   </Group>
                                   <Component id="dtchooserCheckin" min="-2" pref="116" max="-2" attributes="0"/>
                                   <Component id="dtchooserCheckout" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
+                                  <Component id="dtchooserReservationTo" alignment="0" min="-2" pref="116" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -295,15 +296,23 @@
                   <Component id="txtCustName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblCustomerDetails" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="23" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtRoomDescription" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblRoomDetails" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="lblRoomDetails" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="lblRoomDescription" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblRoomDescription" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtRoomDescription" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnCheckRoomAvailability" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="8" max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -339,24 +348,6 @@
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="dtchooserReservationTo" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblReservationTo" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="lblCheckinDate" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                              <Component id="dtchooserCheckin" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="8" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblTotalCharge" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtTotalCharge" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -367,6 +358,23 @@
                           <Component id="txtDeposit" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="dtchooserReservationTo" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="dtchooserCheckin" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="lblReservationTo" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblCheckinDate" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="7" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -395,7 +403,7 @@
                   <Component id="btnSearchReservation" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnUpdateReservation" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnUpdateReservation2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnClearReservation" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCancelReservation" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCalculateTotalCharge" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -550,7 +558,6 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="dtchooserReservationFromMouseClicked"/>
         <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="dtchooserReservationFromPropertyChange"/>
       </Events>
     </Component>
@@ -655,7 +662,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateReservationActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnUpdateReservation2">
+    <Component class="javax.swing.JButton" name="btnClearReservation">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
@@ -663,7 +670,7 @@
         <Property name="text" type="java.lang.String" value="Clear"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateReservation2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearReservationActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCustName">
@@ -794,6 +801,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCalculateTotalChargeActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCheckRoomAvailability">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Check Availability"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCheckRoomAvailabilityActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

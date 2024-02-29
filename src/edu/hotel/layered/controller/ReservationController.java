@@ -36,4 +36,13 @@ public class ReservationController {
     public List<ReservationDto> getAllReservations() {
         return reservationService.getAllReservations();
     }
+
+    public Date getBookingDate(Integer id) {
+         return reservationService.getBookingDate(id);
+    }
+
+    public String cancelReservation(Integer id) {
+        return reservationService.cancelReservation(id);
+    }
+
 }

@@ -57,13 +57,6 @@ public class ReservationService {
         try {
             /*Create Rooms Entity List*/
             List<RoomEntity> entityRooms=creatRoomEntities(dto, session);
-//            List<String> selectedRooms=dto.getRoomDescription();
-//            List<RoomEntity> entityRooms=new ArrayList<>();
-//            for (String selectedRoom : selectedRooms) {
-//                Integer roomId=Integer.parseInt(selectedRoom.split("-")[0]);
-//                RoomEntity roomEntity=roomRepository.get(roomId, session);
-//                entityRooms.add(roomEntity);
-//            }
             /*create Customer Entity Object*/
             Integer custId=Integer.parseInt(dto.getCustomerName().split("-")[0]);
             CustomerEntity cusEntity=customerRepository.get(custId, session);
@@ -85,15 +78,14 @@ public class ReservationService {
             entity.setRoomEntities(entityRooms);
             entity.setCancellation(dto.getCancellation());
             
-            int result=reservationRepository.save(entity,session);
-        
-            if(result>1){
+            String result=reservationRepository.save(entity,session);
+            System.out.println("result-"+result);
+            if(result.equals("succeed")){
                 transaction.commit();
-                return "succeed";
             }else{
                 transaction.rollback();
-                return "failed";
             }
+            return result;
         } catch (Exception e) {
              transaction.rollback();
              return "Error-Save Reservation";
@@ -133,8 +125,7 @@ public class ReservationService {
         revDto.setDeposit(revEntity.getDeposit());
         revDto.setCancellation(revEntity.getCancellation());
 
-        return revDto;
-                
+        return revDto;              
     }
 
     public String updateReservation(ReservationDto dto) {
@@ -157,32 +148,45 @@ public class ReservationService {
             entity.setCheckOut(formatDate(dto.getCheckOut(), "yyyy-MM-dd HH:mm:ss"));
             entity.setPkgType(dto.getPackageType());
             entity.setPkgRate(dto.getPackageRate());
+            entity.setNoOfPkgs(dto.getNoOfPkgs());
             entity.setExtraPayPercentage(dto.getExtraPayPercentage());
             entity.setTotalCharge(dto.getTotalCharge());
             entity.setDeposit(dto.getDeposit());
             entity.setCancellation(dto.getCancellation());
 
             String result=reservationRepository.update(entity,session);
-
-            if(result.equals("done")){
+            String finalResult;
+            if(result.equals("succeed")){
+                List<RoomEntity> rmEntities=entity.getRoomEntities();
+                if(entity.getCheckIn()!=null && entity.getCheckOut()==null){
+                    finalResult=reservationRepository.setRoomStatus(rmEntities,"No",session);
+                }
+                else if(entity.getCheckIn()!=null && entity.getCheckOut()!=null){
+                    finalResult=reservationRepository.setRoomStatus(rmEntities,"Yes",session);
+                }
+                else{
+                    finalResult="succeed";
+                }
                 transaction.commit();
-                return "succeed";
+                return finalResult;
             }else{
+                finalResult="failed";
                 transaction.rollback();
-                return "failed";
             }
-        } catch (Exception e) {
+            return finalResult;
+        } catch (Exception e){
              transaction.rollback();
              return "Error-Update Reservation";
         }
     }
+    
 
     public List<ReservationDto> getReservationsAboveDate(Date date) {
         Session session = SessionFactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         
         List<ReservationDto> revdto=new ArrayList<>();
-        List<ReservationEntity> revEntity=reservationRepository.getReservationsAboveDate(session,"reservedFrom",date);
+        List<ReservationEntity> revEntity=reservationRepository.getReservationsAboveDate(session,"reservedTo",date);
         
         for (int i = 0; i < revEntity.size(); i++) {
             ReservationEntity obj=revEntity.get(i);
@@ -230,12 +234,40 @@ public class ReservationService {
             dto.setCheckOut(obj.getCheckOut());
             dto.setPackageType(obj.getPkgType());
             dto.setPackageRate(obj.getPkgRate());
+            dto.setNoOfPkgs(obj.getNoOfPkgs());
             dto.setTotalCharge(obj.getTotalCharge());
             dto.setDeposit(obj.getDeposit());
             dto.setCancellation(obj.getCancellation());
             revdto.add(dto);
         };
         return revdto;
+    }
+
+    public Date getBookingDate(Integer id) {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        
+        Date bookingDate=reservationRepository.getBookingDate(id,session);
+        return bookingDate;
+    }
+
+    public String cancelReservation(Integer id) {
+        Session session = SessionFactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        try{
+            int result=reservationRepository.cancelReservation(id,session);
+        
+        if(result==1){
+            transaction.commit();
+            return "succeed";
+        }else{
+            transaction.rollback();
+            return "failed";
+        }
+        }catch(Exception ex){
+            transaction.rollback();
+            return "Error-Cancell Reservation";
+        }
     }
     
     

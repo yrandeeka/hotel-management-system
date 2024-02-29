@@ -12,6 +12,7 @@ import edu.hotel.layered.controller.RoomController;
 import edu.hotel.layered.dto.CustomerDto;
 import edu.hotel.layered.dto.ReservationDto;
 import edu.hotel.layered.dto.RoomDto;
+import edu.hotel.layered.entity.RoomEntity;
 import edu.hotel.layered.view.CustomerView;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -53,6 +54,8 @@ public class ReservationView extends javax.swing.JFrame {
     Double extraPayPercentage=0.10;
     String selectedRoomMessage="Not Found Selected Rooms!";
     char searchClicked='N';
+    char displayClicked='N';
+    char ClearClicked='N';
     /**
      * Creates new form ReservationView
      */
@@ -111,16 +114,23 @@ public class ReservationView extends javax.swing.JFrame {
         // Get the new date after adding one day
         return calendar.getTime();
     }
-    private void setTotalCharge(){
+    private void setTotalCharge() throws ParseException{
         Double pkgRate;
         Double roomRate=0.0;
         Double totalPkgRate=0.0;
         Integer noOfPkgs=0;
         Integer id=0;
-        if(listRoom.getSelectedValue()!=null)
-            id=Integer.parseInt(listRoom.getSelectedValue().split("-")[0]);
+        Double total_charge=0.0;
+//        if(listRoom.getSelectedValue()!=null)
+//            id=Integer.parseInt(listRoom.getSelectedValue().split("-")[0]);
+        if(!selectedRooms.isEmpty()){
+            for (int i = 0; i < selectedRooms.size(); i++) {
+                id=Integer.parseInt(selectedRooms.get(i).split("-")[0]);
+                roomRate+=roomCategoryController.getRate(id)==null?0.0:roomCategoryController.getRate(id);
+            }
+        }
 
-        roomRate=roomCategoryController.getRate(id)==null?0.0:roomCategoryController.getRate(id);
+        //roomRate=roomCategoryController.getRate(id)==null?0.0:roomCategoryController.getRate(id);
         System.out.println("roomRate"+roomRate);
         String pkgType=String.valueOf(cmbobxPkgType.getSelectedItem());
         pkgRate=setPkgRate(pkgType);
@@ -128,14 +138,23 @@ public class ReservationView extends javax.swing.JFrame {
         noOfPkgs=Integer.parseInt(cmboboxNoOfPkgs.getSelectedItem().toString());
         totalPkgRate=pkgRate*noOfPkgs;
         System.out.println("totalPkgRate-"+totalPkgRate);
-        totalCharge=(roomRate+totalPkgRate)*getReservedDays()*(1+extraPayPercentage);
-        txtTotalCharge.setText(String.valueOf(valueFormat(totalCharge)));
+        total_charge=(roomRate+totalPkgRate)*getReservedDays()*(1+extraPayPercentage);
+        txtTotalCharge.setText(String.valueOf(valueFormat(total_charge)));
         System.out.println("totalCharge-"+totalCharge);
+        totalCharge=total_charge;
     }
-    private long getReservedDays(){
+    private long getReservedDays() throws ParseException{
         long reservedDays=0;
-        if(dtchooserReservationFrom.getDate()!=null && dtchooserReservationTo.getDate()!=null)
-            reservedDays=1+((dtchooserReservationFrom.getDate().getTime()-dtchooserReservationTo.getDate().getTime())/(1000*60*60*24));
+        Date from = null;
+        Date to;
+        System.out.println("dtchooserReservationFrom.getDate()-"+dtchooserReservationFrom.getDate());
+        System.out.println("dtchooserReservationTo.getDate()-"+dtchooserReservationTo.getDate());
+        
+        if(dtchooserReservationFrom.getDate()!=null && dtchooserReservationTo.getDate()!=null){
+            from=formattedDateAndTime(dtchooserReservationFrom.getDate(),"yyyy-MM-dd");
+            to=formattedDateAndTime(dtchooserReservationFrom.getDate(),"yyyy-MM-dd");
+            reservedDays=1+((from.getTime()-to.getTime())/(1000*60*60*24));
+        }
         System.out.println("reservedDays-"+reservedDays);
         return reservedDays;
     }
@@ -198,7 +217,7 @@ public class ReservationView extends javax.swing.JFrame {
         btnReservationId = new javax.swing.JLabel();
         btnCancelReservation = new javax.swing.JButton();
         btnUpdateReservation = new javax.swing.JButton();
-        btnUpdateReservation2 = new javax.swing.JButton();
+        btnClearReservation = new javax.swing.JButton();
         txtCustName = new javax.swing.JTextField();
         txtRoomDescription = new javax.swing.JTextField();
         lblCustomerDetails = new javax.swing.JLabel();
@@ -213,6 +232,7 @@ public class ReservationView extends javax.swing.JFrame {
         dtchooserBookingDate = new com.toedter.calendar.JDateChooser();
         cmboboxNoOfPkgs = new javax.swing.JComboBox<>();
         btnCalculateTotalCharge = new javax.swing.JButton();
+        btnCheckRoomAvailability = new javax.swing.JButton();
 
         listCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -328,11 +348,6 @@ public class ReservationView extends javax.swing.JFrame {
         lblBookingDate.setText("Booking Date");
 
         dtchooserReservationFrom.setMinSelectableDate(Calendar.getInstance().getTime());
-        dtchooserReservationFrom.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dtchooserReservationFromMouseClicked(evt);
-            }
-        });
         dtchooserReservationFrom.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dtchooserReservationFromPropertyChange(evt);
@@ -392,11 +407,11 @@ public class ReservationView extends javax.swing.JFrame {
             }
         });
 
-        btnUpdateReservation2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnUpdateReservation2.setText("Clear");
-        btnUpdateReservation2.addActionListener(new java.awt.event.ActionListener() {
+        btnClearReservation.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnClearReservation.setText("Clear");
+        btnClearReservation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateReservation2ActionPerformed(evt);
+                btnClearReservationActionPerformed(evt);
             }
         });
 
@@ -467,6 +482,13 @@ public class ReservationView extends javax.swing.JFrame {
             }
         });
 
+        btnCheckRoomAvailability.setText("Check Availability");
+        btnCheckRoomAvailability.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckRoomAvailabilityActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -479,13 +501,13 @@ public class ReservationView extends javax.swing.JFrame {
                     .addComponent(lblRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBookingDate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblReservationFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                    .addComponent(lblReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCheckRoomAvailability))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtReservationId, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dtchooserReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -547,7 +569,7 @@ public class ReservationView extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnUpdateReservation)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnUpdateReservation2))
+                                .addComponent(btnClearReservation))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblCheckinDate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -558,7 +580,8 @@ public class ReservationView extends javax.swing.JFrame {
                                         .addGap(594, 594, 594)
                                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(dtchooserCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dtchooserCheckout, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(dtchooserCheckout, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dtchooserReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(251, 251, 251)
@@ -584,13 +607,19 @@ public class ReservationView extends javax.swing.JFrame {
                     .addComponent(lblCustName)
                     .addComponent(txtCustName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCustomerDetails))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblRoomDetails))
-                    .addComponent(lblRoomDescription))
-                .addGap(26, 26, 26)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblRoomDetails)
+                        .addGap(29, 29, 29))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblRoomDescription)
+                            .addComponent(txtRoomDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCheckRoomAvailability)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -616,19 +645,6 @@ public class ReservationView extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dtchooserReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblReservationTo, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(lblCheckinDate)
-                                .addGap(0, 3, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(dtchooserCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTotalCharge)
                             .addComponent(txtTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -636,7 +652,20 @@ public class ReservationView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblDeposit)
                             .addComponent(txtDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(8, 8, 8)))
+                        .addGap(8, 8, 8))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(dtchooserReservationTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dtchooserCheckin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblReservationTo)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblCheckinDate)
+                                .addGap(0, 7, Short.MAX_VALUE)))))
                 .addComponent(jLabel6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -658,7 +687,7 @@ public class ReservationView extends javax.swing.JFrame {
                     .addComponent(btnSearchReservation)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnUpdateReservation)
-                        .addComponent(btnUpdateReservation2)
+                        .addComponent(btnClearReservation)
                         .addComponent(btnCancelReservation)
                         .addComponent(btnCalculateTotalCharge)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -670,7 +699,6 @@ public class ReservationView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReservationActionPerformed
-        // TODO add your handling code here:
         saveReservation();
     }//GEN-LAST:event_btnAddReservationActionPerformed
 
@@ -688,6 +716,7 @@ public class ReservationView extends javax.swing.JFrame {
 
     private void btnCancelReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelReservationActionPerformed
         // TODO add your handling code here:
+        cancelReservation();
     }//GEN-LAST:event_btnCancelReservationActionPerformed
 
     private void btnUpdateReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateReservationActionPerformed
@@ -695,11 +724,13 @@ public class ReservationView extends javax.swing.JFrame {
         updateReservation();
     }//GEN-LAST:event_btnUpdateReservationActionPerformed
 
-    private void btnUpdateReservation2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateReservation2ActionPerformed
+    private void btnClearReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearReservationActionPerformed
         // TODO add your handling code here:
         searchClicked='N';
+        displayClicked='N';
+        ClearClicked='N';
         clearFields();
-    }//GEN-LAST:event_btnUpdateReservation2ActionPerformed
+    }//GEN-LAST:event_btnClearReservationActionPerformed
 
     private void txtCustNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCustNameKeyReleased
         // TODO add your handling code here:
@@ -746,13 +777,7 @@ public class ReservationView extends javax.swing.JFrame {
         // TODO add your handling code here:
         checkDates(dtchooserReservationFrom,dtchooserReservationTo,
                 "Insert Reservation Start Date","Reservation End Date must be on or after Reservation Start Date");
-        try {
-            if(searchClicked=='N'){
-                checkAvailability(dtchooserReservationTo);
-            }
-        } catch (ParseException ex) {
-            Logger.getLogger(ReservationView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_dtchooserReservationToPropertyChange
 
     private void dtchooserCheckinPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dtchooserCheckinPropertyChange
@@ -765,15 +790,6 @@ public class ReservationView extends javax.swing.JFrame {
         // TODO add your handling code here:
         checkDates(dtchooserReservationFrom,dtchooserReservationTo,
                 "Insert Reservation Start Date","Reservation End Date must be on or after Reservation Start Date");
-        
-            try {
-                if(searchClicked=='N'){
-                    checkAvailability(dtchooserReservationFrom);
-                }
-            } catch (ParseException ex) {
-                Logger.getLogger(ReservationView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
     }//GEN-LAST:event_dtchooserReservationFromPropertyChange
 
     private void dtchooserCheckoutPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dtchooserCheckoutPropertyChange
@@ -793,18 +809,16 @@ public class ReservationView extends javax.swing.JFrame {
 
     private void btnSelectedRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectedRoomsActionPerformed
         // TODO add your handling code here:
+        displayClicked='N';
     }//GEN-LAST:event_btnSelectedRoomsActionPerformed
 
     private void dtchooserBookingDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dtchooserBookingDatePropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_dtchooserBookingDatePropertyChange
 
-    private void dtchooserReservationFromMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dtchooserReservationFromMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dtchooserReservationFromMouseClicked
-
     private void tblReservationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblReservationMouseClicked
         // TODO add your handling code here:
+        displayClicked='Y';
         displayReservations();
     }//GEN-LAST:event_tblReservationMouseClicked
 
@@ -813,11 +827,35 @@ public class ReservationView extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTotalChargeActionPerformed
 
     private void btnCalculateTotalChargeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculateTotalChargeActionPerformed
-        // TODO add your handling code here:
-        setTotalCharge();
+        try {
+            // TODO add your handling code here:
+            setTotalCharge();
+        } catch (ParseException ex) {
+            Logger.getLogger(ReservationView.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Double outstanding=Double.parseDouble(txtTotalCharge.getText())-Double.parseDouble(txtDeposit.getText());
         txtOutstanding.setText(String.valueOf(outstanding));
     }//GEN-LAST:event_btnCalculateTotalChargeActionPerformed
+
+    private void btnCheckRoomAvailabilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckRoomAvailabilityActionPerformed
+        // TODO add your handling code here:
+        if(dtchooserReservationFrom.getDate()!=null || dtchooserReservationTo.getDate()!=null){
+            try {
+                    checkAvailability(dtchooserReservationTo);
+            } catch (ParseException ex) {
+                Logger.getLogger(ReservationView.class.getName()).log(Level.SEVERE, null, ex);
+            }  
+            try {
+                checkAvailability(dtchooserReservationFrom);
+            } catch (ParseException ex) {
+                Logger.getLogger(ReservationView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Please Input Reservation Dates!!");
+        }
+ 
+    }//GEN-LAST:event_btnCheckRoomAvailabilityActionPerformed
     
     /**
      * @param args the command line arguments
@@ -836,7 +874,8 @@ public class ReservationView extends javax.swing.JFrame {
                 }
             }
         }
-        JOptionPane.showMessageDialog(null, selectedRoomMessage);
+        if(displayClicked=='N')
+            JOptionPane.showMessageDialog(null, selectedRoomMessage);
     }
     private void checkDates(JDateChooser dateStart,JDateChooser dateEnd,String msg_1,String msg_2){
         if(dateEnd.getDate()!=null && dateStart.getDate()==null){
@@ -852,7 +891,8 @@ public class ReservationView extends javax.swing.JFrame {
     private void checkAvailability(JDateChooser date) throws ParseException {
         Date selectedDate = formattedDateAndTime(date.getDate(),"yyyy-MM-dd");
         if (date.getDate() != null) {
-            List<ReservationDto> dtos = reservationController.getReservationsAboveDate(new Date());
+            List<ReservationDto> dtos = reservationController.getReservationsAboveDate(formattedDateAndTime(new Date(), "yyyy-MM-dd"));
+            System.out.println(""+dtos.get(0).getReservationId());
             if (!selectedRooms.isEmpty()) {
                 for (int i = 0; i < dtos.size(); i++) {
                     List<String> desList = dtos.get(i).getRoomDescription();
@@ -876,6 +916,7 @@ public class ReservationView extends javax.swing.JFrame {
                         }
                     }
                 }
+                JOptionPane.showMessageDialog(null, "Selected Rooms-Available for booking");
             }
             else{
                 JOptionPane.showMessageDialog(null, "Please select room(s)");
@@ -888,7 +929,7 @@ public class ReservationView extends javax.swing.JFrame {
         if(date!=null){
             SimpleDateFormat formatter = new SimpleDateFormat(format);
             String formattedDateTime = formatter.format(date);
-            return formatter.parse(formattedDateTime);
+            return formatter.parse(formattedDateTime);  
         }
         else{
             return null;
@@ -929,12 +970,13 @@ public class ReservationView extends javax.swing.JFrame {
     private javax.swing.JButton btnAddReservation;
     private javax.swing.JButton btnCalculateTotalCharge;
     private javax.swing.JButton btnCancelReservation;
+    private javax.swing.JButton btnCheckRoomAvailability;
+    private javax.swing.JButton btnClearReservation;
     private javax.swing.JLabel btnReservationId;
     private javax.swing.JButton btnSearchReservation;
     private javax.swing.JButton btnSelectedRooms;
     private javax.swing.JButton btnToHome;
     private javax.swing.JButton btnUpdateReservation;
-    private javax.swing.JButton btnUpdateReservation2;
     private javax.swing.JComboBox<String> cmboboxNoOfPkgs;
     private javax.swing.JComboBox<String> cmbobxPkgType;
     private com.toedter.calendar.JDateChooser dtchooserBookingDate;
@@ -990,8 +1032,7 @@ public class ReservationView extends javax.swing.JFrame {
         roomDtos=roomController.getAllrooms();
         DefaultListModel<String> listModel=new DefaultListModel<>();
         for (RoomDto roomDto : roomDtos) {
-            if(roomDto.getAvaiable().equals("Yes"))
-                listModel.addElement(roomDto.getRoomId()+"-"+roomDto.getDescription());
+            listModel.addElement(roomDto.getRoomId()+"-"+roomDto.getDescription());
         }
         listRoom.setModel(listModel);
     }
@@ -1019,13 +1060,13 @@ public class ReservationView extends javax.swing.JFrame {
                 
                 ReservationDto reservationDto=new ReservationDto(0,txtCustName.getText(),
                     selectedRooms,bookedDate,reservedFrom,reservedTo,checkIn,checkOut,
-                        pkgType,pkgRate,noOfPkgs,extraPayPercentage,ttlCharge,deposit,"no");
+                        pkgType,pkgRate,noOfPkgs,extraPayPercentage,ttlCharge,deposit,"No");
 
                 String result=reservationController.saveReservation(reservationDto);
                 if(result.equals("succeed")){
                    JOptionPane.showMessageDialog(null, " Saved Reservation Successfully");
                    clearFields();
-                   //loadCustomers();
+                   loadReservations();
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Save Reservation Failed");
@@ -1071,7 +1112,7 @@ public class ReservationView extends javax.swing.JFrame {
             lblRoomDetails.setText("Category : "+rmDto.getCategory());
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Not Found Details!!-"+e);
+            JOptionPane.showMessageDialog(null, "Not Found Reservation Details!");
             clearFields();
         }
     }
@@ -1083,15 +1124,17 @@ public class ReservationView extends javax.swing.JFrame {
         try {
              if(choice==JOptionPane.YES_OPTION){
                 String pkgType=String.valueOf(cmbobxPkgType.getSelectedItem());
-
+                
                 dto.setReservationId(Integer.parseInt(txtReservationId.getText()));
                 dto.setCustomerName(txtCustName.getText());
                 dto.setRoomDescription(selectedRooms);
                 dto.setBookingDate(new Date(dtchooserBookingDate.getDate().getTime()));
                 dto.setReservedFrom(dtchooserReservationFrom.getDate());
                 dto.setReservedTo(dtchooserReservationTo.getDate());
-                dto.setCheckIn(new Date(dtchooserCheckin.getDate().getTime()));
-                dto.setCheckOut(new Date(dtchooserCheckout.getDate().getTime()));
+                if(dtchooserCheckin.getDate()!=null)
+                    dto.setCheckIn(new Date(dtchooserCheckin.getDate().getTime()));
+                if(dtchooserCheckout.getDate()!=null)
+                    dto.setCheckOut(new Date(dtchooserCheckout.getDate().getTime()));
                 dto.setPackageType(pkgType);
                 dto.setPackageRate(setPkgRate(pkgType));
                 dto.setNoOfPkgs(Integer.parseInt(cmboboxNoOfPkgs.getSelectedItem().toString()));
@@ -1101,6 +1144,7 @@ public class ReservationView extends javax.swing.JFrame {
                 dto.setCancellation("No");
 
                 String result=reservationController.updateReservation(dto);
+                System.out.println("View result-"+result);
                 if(result.equals("succeed")){
                     JOptionPane.showMessageDialog(rootPane, "Reservation Updated Successfully");
                     clearFields();
@@ -1138,8 +1182,8 @@ public class ReservationView extends javax.swing.JFrame {
     private void loadReservations() {
         try {
             String columns[] = {"Id", "Customer Name", "Room Description", "Booking",
-                "Reserevd From","Reserevd To","Check In","Check Out",
-                "Pkg Type","pkg Rate","No of Pkgs","Total(Rs.)","Deposit","Outstanding"};
+                "Reserevd From","Reserved To","Check In","Check Out",
+                "Pkg Type","pkg Rate","No of Pkgs","Total(Rs.)","Deposit(Rs.)","Outstanding(Rs.)"};
             DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
@@ -1152,18 +1196,20 @@ public class ReservationView extends javax.swing.JFrame {
             
             
             for (ReservationDto dto : dtos) {
-                String roomDes="";
-                List<String> roomDescriptionList=dto.getRoomDescription();
-                for (int i = 0; i < roomDescriptionList.size(); i++) {
-                    roomDes+=roomDescriptionList.get(i)+",";
+                if(dto.getCancellation().equals("No")){
+                    String roomDes="";
+                    List<String> roomDescriptionList=dto.getRoomDescription();
+                    for (int i = 0; i < roomDescriptionList.size(); i++) {
+                        roomDes+=roomDescriptionList.get(i)+",";
+                    }
+                    Double outstanding=dto.getTotalCharge()-dto.getDeposit();
+                    Object[] rowData = {dto.getReservationId(), dto.getCustomerName(),roomDes,
+                        dto.getBookingDate(),formattedDateAndTime(dto.getReservedFrom(), "yyyy-MM-dd"), 
+                        formattedDateAndTime(dto.getReservedTo(), "yyyy-MM-dd"),dto.getCheckIn(),
+                        dto.getCheckOut(),dto.getPackageType(),dto.getPackageRate(),dto.getNoOfPkgs(),dto.getTotalCharge(),
+                        dto.getDeposit(),outstanding};
+                    dtm.addRow(rowData);
                 }
-                Double outstanding=dto.getTotalCharge()-dto.getDeposit();
-                Object[] rowData = {dto.getReservationId(), dto.getCustomerName(),roomDes,
-                    dto.getBookingDate(),formattedDateAndTime(dto.getReservedFrom(), "yyyy-MM-dd"), 
-                    formattedDateAndTime(dto.getReservedTo(), "yyyy-MM-dd"),dto.getCheckIn(),
-                    dto.getCheckOut(),dto.getPackageType(),dto.getPackageRate(),dto.getNoOfPkgs(),dto.getTotalCharge(),
-                    dto.getDeposit(),outstanding};
-                dtm.addRow(rowData);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Loading Error-"+e);
@@ -1183,7 +1229,14 @@ public class ReservationView extends javax.swing.JFrame {
             
             txtReservationId.setText(String.valueOf(model.getValueAt(selectedRow, 0)));
             txtCustName.setText(String.valueOf(model.getValueAt(selectedRow, 1)));
-            txtRoomDescription.setText(String.valueOf(model.getValueAt(selectedRow, 2)));
+            Integer revId=(Integer)model.getValueAt(selectedRow, 0);
+            ReservationDto dto=reservationController.getReservation(revId);
+            
+            List<String> rmList=dto.getRoomDescription();
+            txtRoomDescription.setText(rmList.get(0));
+            selectedRooms=rmList;
+            setSelectRooms();
+            
             dtchooserBookingDate.setDate((Date) model.getValueAt(selectedRow, 3));
             dtchooserReservationFrom.setDate((Date)(model.getValueAt(selectedRow, 4)));
             dtchooserReservationTo.setDate((Date)(model.getValueAt(selectedRow, 5)));
@@ -1195,5 +1248,34 @@ public class ReservationView extends javax.swing.JFrame {
             txtDeposit.setText(String.valueOf(model.getValueAt(selectedRow, 12)));
             txtOutstanding.setText(String.valueOf(model.getValueAt(selectedRow, 13)));
         }
+    }
+    private void cancelReservation() {
+        int choice=JOptionPane.showConfirmDialog(rootPane, "Are you sure?","Cancel Reservation",
+                JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
+        try {
+            if(choice==JOptionPane.YES_OPTION){
+                Integer id=Integer.parseInt(txtReservationId.getText());
+                Date bookingDate=reservationController.getBookingDate(id);
+
+                System.out.println("bookingDate"+bookingDate);
+                Date now=new Date();
+                long hours=(now.getTime()-bookingDate.getTime())/(1000*60*60);
+                System.out.println("hours-"+hours);
+                if(hours<=24){
+                    String result=reservationController.cancelReservation(id);
+                    JOptionPane.showMessageDialog(null, "Cancelled Reservation Successfully");
+                    loadReservations();
+                }
+                else if(hours>24){
+                    JOptionPane.showMessageDialog(null, "exceeded 24 hours. Unable to Cancel Reservation");
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Server Error");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error-Cancel Reservation");
+        }
+            
     }
 }
